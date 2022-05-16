@@ -3,23 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
+[RequireComponent (typeof(Waypoint))]
 public class StageEditing : MonoBehaviour
 {
-    [SerializeField] private int snapOffset = 10;
-
     private TextMesh textMesh;
+    
+    private Waypoint waypoint;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        waypoint = GetComponent<Waypoint>();
+        textMesh = GetComponentInChildren<TextMesh>();
+    }
+
     void Update()
     {
-        float snapedPositionX = Mathf.RoundToInt(transform.position.x / snapOffset) * snapOffset;
-        float snapedPositionZ = Mathf.RoundToInt(transform.position.z / snapOffset) * snapOffset;
+        SnapToGrid();
+        PutLabel();
+    }
 
-        transform.position = new Vector3(snapedPositionX, 0, snapedPositionZ);
+    private void SnapToGrid()
+    {
+        transform.position = new Vector3(waypoint.GetGridPosition().x, 0, waypoint.GetGridPosition().y);
+    }
 
-        string labelText = (transform.position.x / snapOffset).ToString() + "," + (transform.position.z / snapOffset).ToString();
+    private void PutLabel()
+    {
+        int gridSize = waypoint.GetGridSize();
+        string labelText = (transform.position.x / gridSize).ToString() + "," + (transform.position.z / gridSize).ToString();
 
-        textMesh = GetComponentInChildren<TextMesh>();
         textMesh.text = labelText;
         gameObject.name = labelText;
     }
