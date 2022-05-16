@@ -7,7 +7,6 @@ using UnityEngine;
 public class StageEditing : MonoBehaviour
 {
     private TextMesh textMesh;
-    
     private Waypoint waypoint;
 
     private void Awake()
@@ -24,13 +23,14 @@ public class StageEditing : MonoBehaviour
 
     private void SnapToGrid()
     {
-        transform.position = new Vector3(waypoint.GetGridPosition().x, 0, waypoint.GetGridPosition().y);
+        int gridSize = waypoint.GetGridSize();
+
+        transform.position = new Vector3(waypoint.GetGridPosition().x * gridSize, 0, waypoint.GetGridPosition().y * gridSize);
     }
 
     private void PutLabel()
     {
-        int gridSize = waypoint.GetGridSize();
-        string labelText = (transform.position.x / gridSize).ToString() + "," + (transform.position.z / gridSize).ToString();
+        string labelText = waypoint.GetGridPosition().x.ToString() + "," + waypoint.GetGridPosition().y.ToString();
 
         textMesh.text = labelText;
         gameObject.name = labelText;
