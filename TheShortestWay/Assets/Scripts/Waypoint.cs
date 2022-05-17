@@ -74,4 +74,20 @@ public class Waypoint : MonoBehaviour
     {
         return hasPickedEndColor;
     }
+
+    public void SetColor(Color color)
+    {
+        GetComponent<MeshRenderer>().material.color = color;
+    }
+
+    public Waypoint GetStartWaypoint(Waypoint[] waypoints)
+    {
+        foreach (Waypoint waypoint in waypoints)
+        {
+            if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
+                return waypoint;
+        }
+
+        return null;
+    }
 }
