@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private List<Waypoint> stages;
+    private Pathfinder pathController;
 
     private bool isGoing = false;
+
+    private void Awake()
+    {
+        pathController = GameObject.Find("Road").GetComponent<Pathfinder>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<Waypoint>().GetHasPickedEndColorValue() && !isGoing)
+        if (FindObjectOfType<Waypoint>().GetHasPickedEndColorValue() && !isGoing && pathController.readyToGetPath)
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -20,9 +25,9 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (Waypoint stage in stages)
+        foreach (Waypoint waypoint in pathController.GetPath())
         {
-            transform.position = new Vector3(stage.transform.position.x, transform.position.y, stage.transform.position.z);
+            transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
 
             yield return new WaitForSeconds(1);
         }
