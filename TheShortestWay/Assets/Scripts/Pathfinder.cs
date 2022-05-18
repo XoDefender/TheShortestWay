@@ -43,23 +43,27 @@ public class Pathfinder : MonoBehaviour
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
                 roadWaypoints.Add(waypoint.GetGridPosition(), waypoint);
         }
-
-        path.Add(roadWaypoints[new Vector2Int(6, 4)]);
     }
 
     // Update is called once per frame
     void Update()
     {
-        endWaypoint = roadWaypoints[new Vector2Int(6, 4)];
-        currentlyGoingFrom = endWaypoint;
-
         waypointController.ColorStartAndEnd(Color.white, Color.black, waypoints);
 
-        if (waypointController.GetHasPickedEndColorValue())
+        if (waypointController.GetEndWaypoint())
+        {
+            endWaypoint = waypointController.GetEndWaypoint();
+
+            if (!path.Contains(endWaypoint))
+                path.Add(endWaypoint);
+
+            currentlyGoingFrom = endWaypoint;
+
             ExploreNeighbours();
 
-        if (readyToFindPath && !readyToGetPath)
-            FindPath();
+            if (readyToFindPath && !readyToGetPath)
+                FindPath();
+        }
     }
 
     private void ExploreNeighbours()

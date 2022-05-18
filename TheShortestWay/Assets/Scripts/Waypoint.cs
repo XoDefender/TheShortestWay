@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    public Waypoint exploredFrom;
-
+    private Waypoint endWaypoint;
     private GameObject player;
 
     private const string playerName = "Player";
@@ -14,7 +13,6 @@ public class Waypoint : MonoBehaviour
 
     private bool hasPickedStartColor = false;
     private bool hasPickedEndColor = false;
-    private bool hasPickedEndWaypoint = false;
 
     // Start is called before the first frame update
     private void Awake()
@@ -67,6 +65,7 @@ public class Waypoint : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 100))
                 {
                     hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = endColor;
+                    endWaypoint = hit.collider.gameObject.GetComponent<Waypoint>();
                     hasPickedEndColor = true;
                 }
             }
@@ -94,24 +93,8 @@ public class Waypoint : MonoBehaviour
         return null;
     }
 
-   /* public Waypoint GetEndWaypoint()
+    public Waypoint GetEndWaypoint()
     {
-        if (!hasPickedEndWaypoint)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, 100))
-                {
-                    hasPickedEndWaypoint = true;
-
-                    return hit.collider.gameObject.GetComponent<Waypoint>();
-                }
-            }
-        }
-
-        return null;
-    }*/
+        return endWaypoint;
+    }
 }
