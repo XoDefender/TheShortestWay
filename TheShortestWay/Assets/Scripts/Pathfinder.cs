@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pathfinder : MonoBehaviour
 {
-    private WaypointData waypointData;
+    private StartEndWaypoints startEndWaypoints;
     private WaypointData currentlyGoingFrom;
     private WaypointData[] waypoints;
 
@@ -25,19 +25,16 @@ public class Pathfinder : MonoBehaviour
     private bool readyToFindPath = false;
     public bool readyToGetPath = false;
 
+    private bool isStartWaypointInQueue = false;
+
     private void Awake()
     {
-        waypointData = FindObjectOfType<WaypointData>();
+        startEndWaypoints = GetComponent<StartEndWaypoints>();
         waypoints = FindObjectsOfType<WaypointData>();
     }
 
     void Start()
-    {
-        waypointData.PickStartWaypoint(Color.white, waypoints);
-
-        exploringWaypoints.Enqueue(waypointData.GetStartWaypoint());
-        exploredWaypoints.Add(waypointData.GetStartWaypoint());
-        
+    { 
         foreach (WaypointData waypoint in waypoints)
         {
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
@@ -47,19 +44,26 @@ public class Pathfinder : MonoBehaviour
 
     void Update()
     {
-        waypointData.PickEndWaypoint(Color.black);
-
-        BreadthFirstSearch(waypointData.GetStartWaypoint(), waypointData.GetEndWaypoint());
+        BreadthFirstSearch(startEndWaypoints.GetStartWaypoint(), startEndWaypoints.GetEndWaypoint());
     }
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
     {
         if(endWaypoint && startWaypoint)
         {
-            if (!path.Contains(waypointData.GetEndWaypoint()))
-                path.Add(waypointData.GetEndWaypoint());
+            if(!isStartWaypointInQueue)
+            {
+                exploringWaypoints.Enqueue(startEndWaypoints.GetStartWaypoint());
+                isStartWaypointInQueue = true;
+            }
 
-            currentlyGoingFrom = waypointData.GetEndWaypoint();
+            if (!path.Contains(startEndWaypoints.GetStartWaypoint()))
+                exploredWaypoints.Add(startEndWaypoints.GetStartWaypoint());
+
+            if (!path.Contains(startEndWaypoints.GetEndWaypoint()))
+                path.Add(startEndWaypoints.GetEndWaypoint());
+
+            currentlyGoingFrom = startEndWaypoints.GetEndWaypoint();
 
             foreach (Vector2Int direction in directions)
             {
@@ -82,20 +86,23 @@ public class Pathfinder : MonoBehaviour
             }
 
             if (exploringWaypoints.Count != 0)
+            {
                 exploringWaypoints.Dequeue();
+                readyToFindPath = false;
+            }
             else
                 readyToFindPath = true;
 
             if (readyToFindPath && !readyToGetPath)
             {
-                while (toFrom[currentlyGoingFrom.GetGridPosition()] != waypointData.GetStartWaypoint())
+                while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.GetStartWaypoint())
                 {
                     path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
                     currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
                 }
 
-                if (!path.Contains(waypointData.GetStartWaypoint()))
-                    path.Add(waypointData.GetStartWaypoint());
+                if (!path.Contains(startEndWaypoints.GetStartWaypoint()))
+                    path.Add(startEndWaypoints.GetStartWaypoint());
 
                 path.Reverse();
 

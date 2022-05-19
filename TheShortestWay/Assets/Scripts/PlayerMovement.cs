@@ -5,20 +5,20 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Pathfinder pathfinder;
-    private WaypointData waypointData;
+    private StartEndWaypoints startEndWaypoints;
 
     private bool isGoing = false;
 
     private void Awake()
     {
         pathfinder = GameObject.Find("Road").GetComponent<Pathfinder>();
-        waypointData = FindObjectOfType<WaypointData>();
+        startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (waypointData.GetEndWaypoint() && !isGoing && pathfinder.readyToGetPath)
+        if (startEndWaypoints.GetEndWaypoint() && !isGoing && pathfinder.readyToGetPath)
         {
             StartCoroutine(StartMovement());
             isGoing = true;
