@@ -33,5 +33,13 @@ public class PlayerMovement : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+
+        startEndWaypoints.SetStartWaypoinToNull();
+        startEndWaypoints.SetEndWaypoinToNull();
+    }
+
+    public void SetIsGoing(bool isGoing)
+    {
+        this.isGoing = isGoing;
     }
 }

@@ -67,4 +67,14 @@ public class StartEndWaypoints : MonoBehaviour
     {
         return endWaypoint;
     }
+
+    public void SetStartWaypoinToNull()
+    {
+        startWaypoint = null;
+    }
+
+    public void SetEndWaypoinToNull()
+    {
+        endWaypoint = null;
+    }
 }

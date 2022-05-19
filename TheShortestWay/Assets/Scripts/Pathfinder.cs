@@ -22,6 +22,9 @@ public class Pathfinder : MonoBehaviour
     private List<WaypointData> exploredWaypoints = new List<WaypointData>();
     private List<WaypointData> path = new List<WaypointData>();
 
+    private PlayerMovement playerMovement;
+
+
     private bool readyToFindPath = false;
     public bool readyToGetPath = false;
 
@@ -29,6 +32,7 @@ public class Pathfinder : MonoBehaviour
 
     private void Awake()
     {
+        playerMovement = FindObjectOfType<PlayerMovement>();
         startEndWaypoints = GetComponent<StartEndWaypoints>();
         waypoints = FindObjectsOfType<WaypointData>();
     }
@@ -49,9 +53,9 @@ public class Pathfinder : MonoBehaviour
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
     {
-        if(endWaypoint && startWaypoint)
+        if (endWaypoint && startWaypoint)
         {
-            if(!isStartWaypointInQueue)
+            if (!isStartWaypointInQueue)
             {
                 exploringWaypoints.Enqueue(startEndWaypoints.GetStartWaypoint());
                 isStartWaypointInQueue = true;
@@ -108,6 +112,18 @@ public class Pathfinder : MonoBehaviour
 
                 readyToGetPath = true;
             }
+        }
+        else
+        {
+            path.Clear();
+            exploredWaypoints.Clear();
+            toFrom.Clear();
+
+            isStartWaypointInQueue = false;
+            readyToFindPath = false;
+            readyToGetPath = false;
+
+            playerMovement.SetIsGoing(false);
         }
     }
 
