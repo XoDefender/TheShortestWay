@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-[RequireComponent (typeof(Waypoint))]
-public class StageEditing : MonoBehaviour
+[RequireComponent (typeof(WaypointData))]
+public class WaypointEditing : MonoBehaviour
 {
+    private WaypointData waypoint;
     private TextMesh textMesh;
-    private Waypoint waypoint;
 
     private void Awake()
     {
-        waypoint = GetComponent<Waypoint>();
+        waypoint = GetComponent<WaypointData>();
         textMesh = GetComponentInChildren<TextMesh>();
     }
 

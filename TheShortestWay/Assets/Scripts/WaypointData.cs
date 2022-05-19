@@ -2,28 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Waypoint : MonoBehaviour
+public class WaypointData : MonoBehaviour
 {
-    private Waypoint endWaypoint;
+    private WaypointData startWaypoint;
+    private WaypointData endWaypoint;
     private GameObject player;
 
     private const string playerName = "Player";
 
     private const int gridSize = 10;
 
-    private bool hasPickedStartColor = false;
-    private bool hasPickedEndColor = false;
-
     // Start is called before the first frame update
     private void Awake()
     {
         player = GameObject.Find(playerName);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public int GetGridSize()
@@ -39,23 +31,31 @@ public class Waypoint : MonoBehaviour
             );
     }
 
-    public void ColorStartAndEnd(Color startColor, Color endColor, Waypoint[] waypoints)
+    public void SetColor(Color color)
     {
-        if (!hasPickedStartColor)
+        GetComponent<MeshRenderer>().material.color = color;
+    }
+
+    public void PickStartWaypoint(Color startColor, WaypointData[] waypoints)
+    {
+        if(startWaypoint == null)
         {
-            foreach(Waypoint waypoint in waypoints)
+            foreach (WaypointData waypoint in waypoints)
             {
                 if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
                 {
                     waypoint.GetComponent<MeshRenderer>().material.color = startColor;
-                    hasPickedStartColor = true;
+                    startWaypoint = waypoint;
 
                     break;
                 }
             }
         }
+    }
 
-        if (!hasPickedEndColor)
+    public void PickEndWaypoint(Color endColor)
+    {
+        if (endWaypoint == null)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -65,35 +65,18 @@ public class Waypoint : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 100))
                 {
                     hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = endColor;
-                    endWaypoint = hit.collider.gameObject.GetComponent<Waypoint>();
-                    hasPickedEndColor = true;
+                    endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
                 }
             }
         }
     }
 
-    public bool GetHasPickedEndColorValue()
+    public WaypointData GetStartWaypoint()
     {
-        return hasPickedEndColor;
+        return startWaypoint;
     }
 
-    public void SetColor(Color color)
-    {
-        GetComponent<MeshRenderer>().material.color = color;
-    }
-
-    public Waypoint GetStartWaypoint(Waypoint[] waypoints)
-    {
-        foreach (Waypoint waypoint in waypoints)
-        {
-            if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
-                return waypoint;
-        }
-
-        return null;
-    }
-
-    public Waypoint GetEndWaypoint()
+    public WaypointData GetEndWaypoint()
     {
         return endWaypoint;
     }
