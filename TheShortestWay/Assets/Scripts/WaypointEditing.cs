@@ -23,7 +23,7 @@ public class WaypointEditing : MonoBehaviour
 
     private void SnapToGrid()
     {
-        int gridSize = waypoint.GetGridSize();
+        int gridSize = waypoint.GridSize;
 
         transform.position = new Vector3(waypoint.GetGridPosition().x * gridSize, 0, waypoint.GetGridPosition().y * gridSize);
     }

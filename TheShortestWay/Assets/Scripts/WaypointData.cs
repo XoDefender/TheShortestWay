@@ -6,10 +6,7 @@ public class WaypointData : MonoBehaviour
 {
     private const int gridSize = 10;
 
-    public int GetGridSize()
-    {
-        return gridSize;
-    }
+    public int GridSize { get { return gridSize; } }
 
     public Vector2Int GetGridPosition()
     {

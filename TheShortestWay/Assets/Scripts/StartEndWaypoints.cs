@@ -58,23 +58,7 @@ public class StartEndWaypoints : MonoBehaviour
         }
     }
 
-    public WaypointData GetStartWaypoint()
-    {
-        return startWaypoint;
-    }
+    public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = null; } }
 
-    public WaypointData GetEndWaypoint()
-    {
-        return endWaypoint;
-    }
-
-    public void SetStartWaypoinToNull()
-    {
-        startWaypoint = null;
-    }
-
-    public void SetEndWaypoinToNull()
-    {
-        endWaypoint = null;
-    }
+    public WaypointData EndWaypoint { get { return endWaypoint; } set { endWaypoint = null; } }
 }

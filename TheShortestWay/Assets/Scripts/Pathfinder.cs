@@ -48,7 +48,7 @@ public class Pathfinder : MonoBehaviour
 
     void Update()
     {
-        BreadthFirstSearch(startEndWaypoints.GetStartWaypoint(), startEndWaypoints.GetEndWaypoint());
+        BreadthFirstSearch(startEndWaypoints.StartWaypoint, startEndWaypoints.EndWaypoint);
     }
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
@@ -57,17 +57,17 @@ public class Pathfinder : MonoBehaviour
         {
             if (!isStartWaypointInQueue)
             {
-                exploringWaypoints.Enqueue(startEndWaypoints.GetStartWaypoint());
+                exploringWaypoints.Enqueue(startEndWaypoints.StartWaypoint);
                 isStartWaypointInQueue = true;
             }
 
-            if (!path.Contains(startEndWaypoints.GetStartWaypoint()))
-                exploredWaypoints.Add(startEndWaypoints.GetStartWaypoint());
+            if (!path.Contains(startEndWaypoints.StartWaypoint))
+                exploredWaypoints.Add(startEndWaypoints.StartWaypoint);
 
-            if (!path.Contains(startEndWaypoints.GetEndWaypoint()))
-                path.Add(startEndWaypoints.GetEndWaypoint());
+            if (!path.Contains(startEndWaypoints.EndWaypoint))
+                path.Add(startEndWaypoints.EndWaypoint);
 
-            currentlyGoingFrom = startEndWaypoints.GetEndWaypoint();
+            currentlyGoingFrom = startEndWaypoints.EndWaypoint;
 
             foreach (Vector2Int direction in directions)
             {
@@ -99,14 +99,14 @@ public class Pathfinder : MonoBehaviour
 
             if (readyToFindPath && !readyToGetPath)
             {
-                while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.GetStartWaypoint())
+                while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.StartWaypoint)
                 {
                     path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
                     currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
                 }
 
-                if (!path.Contains(startEndWaypoints.GetStartWaypoint()))
-                    path.Add(startEndWaypoints.GetStartWaypoint());
+                if (!path.Contains(startEndWaypoints.StartWaypoint))
+                    path.Add(startEndWaypoints.StartWaypoint);
 
                 path.Reverse();
 
@@ -123,12 +123,9 @@ public class Pathfinder : MonoBehaviour
             readyToFindPath = false;
             readyToGetPath = false;
 
-            playerMovement.SetIsGoing(false);
+            playerMovement.IsGoing = false;
         }
     }
 
-    public List<WaypointData> GetPath()
-    {
-        return path;
-    }
+    public List<WaypointData> GetPath { get { return path; } }
 }
