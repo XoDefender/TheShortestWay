@@ -27,7 +27,7 @@ public class Pathfinder : MonoBehaviour
 
     private bool readyToFindPath = false;
     public bool readyToGetPath = false;
-
+    public bool hasPath = false;
     private bool isStartWaypointInQueue = false;
 
     private void Awake()
@@ -38,7 +38,7 @@ public class Pathfinder : MonoBehaviour
     }
 
     void Start()
-    { 
+    {
         foreach (WaypointData waypoint in waypoints)
         {
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
@@ -53,7 +53,7 @@ public class Pathfinder : MonoBehaviour
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
     {
-        if (endWaypoint && startWaypoint)
+        if (endWaypoint && startWaypoint && !hasPath)
         {
             if (!isStartWaypointInQueue)
             {
@@ -110,22 +110,28 @@ public class Pathfinder : MonoBehaviour
 
                 path.Reverse();
 
+                foreach (WaypointData waypoint in path)
+                    waypoint.GetComponent<MeshRenderer>().material.color = Color.red;
+
                 readyToGetPath = true;
+                hasPath = true;
             }
         }
         else
         {
-            path.Clear();
             exploredWaypoints.Clear();
             toFrom.Clear();
 
             isStartWaypointInQueue = false;
             readyToFindPath = false;
-            readyToGetPath = false;
 
+            readyToGetPath = false;
             playerMovement.IsGoing = false;
         }
+
+        if (hasPath && startEndWaypoints.HasPickedEndWaypoint)
+            readyToGetPath = true;
     }
 
-    public List<WaypointData> GetPath { get { return path; } }
+    public List<WaypointData> Path { get { return path; } set { path = value; } }
 }

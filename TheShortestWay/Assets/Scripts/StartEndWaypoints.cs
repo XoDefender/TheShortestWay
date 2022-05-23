@@ -6,24 +6,32 @@ public class StartEndWaypoints : MonoBehaviour
 {
     private WaypointData startWaypoint;
     private WaypointData endWaypoint;
+    private WaypointData previousEndWaypoint;
     private WaypointData[] waypoints;
     private GameObject player;
+    private Pathfinder pathfinder;
 
     private const string playerName = "Player";
+
+    private bool hasPickedEndWaypoint = false;
 
     private void Awake()
     {
         player = GameObject.Find(playerName);
+        pathfinder = GameObject.Find("Road").GetComponent<Pathfinder>();
         waypoints = FindObjectsOfType<WaypointData>();
     }
 
     void Update()
     {
-        PickStartWaypoint(Color.white, waypoints);
-        PickEndWaypoint(Color.black);
+        if (!AreEqual())
+            pathfinder.Path = null;
+
+        PickStartWaypoint(waypoints);
+        PickEndWaypoint();
     }
 
-    private void PickStartWaypoint(Color startColor, WaypointData[] waypoints)
+    private void PickStartWaypoint(WaypointData[] waypoints)
     {
         if (startWaypoint == null)
         {
@@ -31,32 +39,48 @@ public class StartEndWaypoints : MonoBehaviour
             {
                 if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
                 {
-                    waypoint.GetComponent<MeshRenderer>().material.color = startColor;
                     startWaypoint = waypoint;
-
                     break;
                 }
             }
         }
     }
 
-    private void PickEndWaypoint(Color endColor)
+    private void PickEndWaypoint()
     {
-        if (endWaypoint == null)
+        if(!hasPickedEndWaypoint)
         {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
+
+                if(!AreEqual())
+                    pathfinder.hasPath = false;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
                 if (Physics.Raycast(ray, out hit, 100))
-                {
-                    hit.collider.gameObject.GetComponent<MeshRenderer>().material.color = endColor;
-                    endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
-                }
+                    hasPickedEndWaypoint = true;
             }
         }
     }
+
+    public bool AreEqual()
+    {
+        if (endWaypoint == previousEndWaypoint)
+            return true;
+        else
+        {
+            previousEndWaypoint = endWaypoint;
+            return false;
+        } 
+    }
+
+    public bool HasPickedEndWaypoint { get { return hasPickedEndWaypoint; } set { hasPickedEndWaypoint = value; } }
 
     public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = null; } }
 

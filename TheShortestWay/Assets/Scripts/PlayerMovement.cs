@@ -18,8 +18,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startEndWaypoints.EndWaypoint && !isGoing && pathfinder.readyToGetPath)
+        if (!isGoing && pathfinder.readyToGetPath && startEndWaypoints.HasPickedEndWaypoint)
         {
+            Debug.Log(isGoing + "  " + pathfinder.readyToGetPath + "  " + startEndWaypoints.HasPickedEndWaypoint);
             StartCoroutine(StartMovement());
             isGoing = true;
         }
@@ -27,15 +28,15 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (WaypointData waypoint in pathfinder.GetPath)
+        foreach (WaypointData waypoint in pathfinder.Path)
         {
             transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
 
             yield return new WaitForSeconds(1);
         }
 
+        startEndWaypoints.HasPickedEndWaypoint = false;
         startEndWaypoints.StartWaypoint = null;
-        startEndWaypoints.EndWaypoint = null;
     }
 
     public bool IsGoing { set { isGoing = value; } }
