@@ -6,10 +6,8 @@ public class StartEndWaypoints : MonoBehaviour
 {
     private WaypointData startWaypoint;
     private WaypointData endWaypoint;
-    private WaypointData previousEndWaypoint;
     private WaypointData[] waypoints;
     private GameObject player;
-    private Pathfinder pathfinder;
 
     private const string playerName = "Player";
 
@@ -18,20 +16,16 @@ public class StartEndWaypoints : MonoBehaviour
     private void Awake()
     {
         player = GameObject.Find(playerName);
-        pathfinder = GameObject.Find("Road").GetComponent<Pathfinder>();
         waypoints = FindObjectsOfType<WaypointData>();
     }
 
     void Update()
     {
-        if (!AreEqual())
-            pathfinder.Path = null;
-
-        PickStartWaypoint(waypoints);
-        PickEndWaypoint();
+        PickStartWaypoint(Color.white, waypoints);
+        PickEndWaypoint(Color.black);
     }
 
-    private void PickStartWaypoint(WaypointData[] waypoints)
+    private void PickStartWaypoint(Color startColor, WaypointData[] waypoints)
     {
         if (startWaypoint == null)
         {
@@ -39,16 +33,18 @@ public class StartEndWaypoints : MonoBehaviour
             {
                 if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
                 {
+                    waypoint.GetComponent<MeshRenderer>().material.color = startColor;
                     startWaypoint = waypoint;
+
                     break;
                 }
             }
         }
     }
 
-    private void PickEndWaypoint()
+    private void PickEndWaypoint(Color endColor)
     {
-        if(!hasPickedEndWaypoint)
+        if (!hasPickedEndWaypoint)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -56,9 +52,7 @@ public class StartEndWaypoints : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100))
             {
                 endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
-
-                if(!AreEqual())
-                    pathfinder.hasPath = false;
+                endWaypoint.GetComponent<MeshRenderer>().material.color = endColor;
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -69,20 +63,9 @@ public class StartEndWaypoints : MonoBehaviour
         }
     }
 
-    public bool AreEqual()
-    {
-        if (endWaypoint == previousEndWaypoint)
-            return true;
-        else
-        {
-            previousEndWaypoint = endWaypoint;
-            return false;
-        } 
-    }
-
-    public bool HasPickedEndWaypoint { get { return hasPickedEndWaypoint; } set { hasPickedEndWaypoint = value; } }
-
     public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = null; } }
 
     public WaypointData EndWaypoint { get { return endWaypoint; } set { endWaypoint = null; } }
+
+    public bool HasPickedEndWaypoint { get { return hasPickedEndWaypoint; } set { hasPickedEndWaypoint = value; } }
 }

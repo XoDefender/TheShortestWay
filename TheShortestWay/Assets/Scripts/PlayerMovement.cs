@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Pathfinder pathfinder;
     private StartEndWaypoints startEndWaypoints;
+    private List<WaypointData> pathToFollow;
 
     private bool isGoing = false;
 
     private void Awake()
     {
-        pathfinder = GameObject.Find("Road").GetComponent<Pathfinder>();
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isGoing && pathfinder.readyToGetPath && startEndWaypoints.HasPickedEndWaypoint)
+        Debug.Log(pathToFollow.Count);
+        if (startEndWaypoints.HasPickedEndWaypoint && !isGoing)
         {
-            Debug.Log(isGoing + "  " + pathfinder.readyToGetPath + "  " + startEndWaypoints.HasPickedEndWaypoint);
             StartCoroutine(StartMovement());
             isGoing = true;
         }
@@ -28,16 +27,17 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (WaypointData waypoint in pathfinder.Path)
+        foreach (WaypointData waypoint in pathToFollow)
         {
             transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
 
             yield return new WaitForSeconds(1);
         }
 
-        startEndWaypoints.HasPickedEndWaypoint = false;
         startEndWaypoints.StartWaypoint = null;
+        startEndWaypoints.HasPickedEndWaypoint = false;
+        isGoing = false;
     }
 
-    public bool IsGoing { set { isGoing = value; } }
+    public List<WaypointData> PathToFollow { get { return pathToFollow; } set { pathToFollow = value; } }
 }

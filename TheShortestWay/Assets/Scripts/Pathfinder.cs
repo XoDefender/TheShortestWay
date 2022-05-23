@@ -7,6 +7,7 @@ public class Pathfinder : MonoBehaviour
     private StartEndWaypoints startEndWaypoints;
     private WaypointData currentlyGoingFrom;
     private WaypointData[] waypoints;
+    private WaypointData waypointData;
 
     private Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
     private Dictionary<Vector2Int, WaypointData> toFrom = new Dictionary<Vector2Int, WaypointData>();
@@ -24,21 +25,22 @@ public class Pathfinder : MonoBehaviour
 
     private PlayerMovement playerMovement;
 
-
     private bool readyToFindPath = false;
-    public bool readyToGetPath = false;
-    public bool hasPath = false;
+
     private bool isStartWaypointInQueue = false;
+
+    private bool isObserved = false;
 
     private void Awake()
     {
+        waypointData = FindObjectOfType<WaypointData>();
         playerMovement = FindObjectOfType<PlayerMovement>();
         startEndWaypoints = GetComponent<StartEndWaypoints>();
         waypoints = FindObjectsOfType<WaypointData>();
     }
 
     void Start()
-    {
+    { 
         foreach (WaypointData waypoint in waypoints)
         {
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
@@ -48,13 +50,17 @@ public class Pathfinder : MonoBehaviour
 
     void Update()
     {
+        if(!waypointData.AreEqual(startEndWaypoints.EndWaypoint))
+            isObserved = false;
+
         BreadthFirstSearch(startEndWaypoints.StartWaypoint, startEndWaypoints.EndWaypoint);
     }
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
     {
-        if (endWaypoint && startWaypoint && !hasPath)
+        if (endWaypoint && startWaypoint && waypointData.AreEqual(startEndWaypoints.EndWaypoint) && !isObserved)
         {
+            Debug.Log("If");
             if (!isStartWaypointInQueue)
             {
                 exploringWaypoints.Enqueue(startEndWaypoints.StartWaypoint);
@@ -97,7 +103,7 @@ public class Pathfinder : MonoBehaviour
             else
                 readyToFindPath = true;
 
-            if (readyToFindPath && !readyToGetPath)
+            if (readyToFindPath)
             {
                 while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.StartWaypoint)
                 {
@@ -111,27 +117,24 @@ public class Pathfinder : MonoBehaviour
                 path.Reverse();
 
                 foreach (WaypointData waypoint in path)
+                {
                     waypoint.GetComponent<MeshRenderer>().material.color = Color.red;
+                }
 
-                readyToGetPath = true;
-                hasPath = true;
+                List<WaypointData> tempPath = new List<WaypointData>(path);
+                playerMovement.PathToFollow = tempPath;
+
+                isObserved = true;
             }
         }
         else
         {
+            path.Clear();
             exploredWaypoints.Clear();
             toFrom.Clear();
 
             isStartWaypointInQueue = false;
             readyToFindPath = false;
-
-            readyToGetPath = false;
-            playerMovement.IsGoing = false;
         }
-
-        if (hasPath && startEndWaypoints.HasPickedEndWaypoint)
-            readyToGetPath = true;
     }
-
-    public List<WaypointData> Path { get { return path; } set { path = value; } }
 }
