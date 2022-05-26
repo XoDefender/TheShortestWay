@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private StartEndWaypoints startEndWaypoints;
     private Pathfinder pathfinder;
+    public List<WaypointData> pathToFollow;
 
     private bool isGoing = false;
 
@@ -27,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (WaypointData waypoint in pathfinder.path)
+        foreach (WaypointData waypoint in pathToFollow)
         {
             transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
 
@@ -37,5 +38,12 @@ public class PlayerMovement : MonoBehaviour
         startEndWaypoints.StartWaypoint = null;
         startEndWaypoints.HasPickedEndWaypoint = false;
         isGoing = false;
+
+        pathfinder.path.Clear();
+        pathfinder.exploredWaypoints.Clear();
+        pathfinder.toFrom.Clear();
+
+        pathfinder.isStartWaypointInQueue = false;
+        pathfinder.readyToFindPath = false;
     }
 }

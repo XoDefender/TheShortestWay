@@ -55,6 +55,7 @@ public class StartEndWaypoints : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100))
             {
                 endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
+
                 endWaypoint.GetComponent<MeshRenderer>().material.color = endColor;
 
                 readyToPickEndWaypoint = false;
