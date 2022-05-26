@@ -5,8 +5,21 @@ using UnityEngine;
 public class WaypointData : MonoBehaviour
 {
     private WaypointData previousWaypoint;
+    private Pathfinder pathfinder;
+    private StartEndWaypoints startEndWaypoints;
     private const int gridSize = 10;
 
+    private void Awake()
+    {
+        pathfinder = FindObjectOfType<Pathfinder>();
+        startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
+    }
+
+    private void Update()
+    {
+        if(!pathfinder.isObserved)
+            pathfinder.areEqual = AreEqual(startEndWaypoints.EndWaypoint);
+    }
     public int GridSize { get { return gridSize; } }
 
     public Vector2Int GetGridPosition()

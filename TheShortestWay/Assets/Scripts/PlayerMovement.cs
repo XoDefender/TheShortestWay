@@ -5,19 +5,19 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private StartEndWaypoints startEndWaypoints;
-    private List<WaypointData> pathToFollow;
+    private Pathfinder pathfinder;
 
     private bool isGoing = false;
 
     private void Awake()
     {
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
+        pathfinder = FindObjectOfType<Pathfinder>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(pathToFollow.Count);
         if (startEndWaypoints.HasPickedEndWaypoint && !isGoing)
         {
             StartCoroutine(StartMovement());
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (WaypointData waypoint in pathToFollow)
+        foreach (WaypointData waypoint in pathfinder.path)
         {
             transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
 
@@ -38,6 +38,4 @@ public class PlayerMovement : MonoBehaviour
         startEndWaypoints.HasPickedEndWaypoint = false;
         isGoing = false;
     }
-
-    public List<WaypointData> PathToFollow { get { return pathToFollow; } set { pathToFollow = value; } }
 }

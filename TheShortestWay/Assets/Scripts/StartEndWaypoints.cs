@@ -8,15 +8,18 @@ public class StartEndWaypoints : MonoBehaviour
     private WaypointData endWaypoint;
     private WaypointData[] waypoints;
     private GameObject player;
+    private Pathfinder pathfinder;
 
     private const string playerName = "Player";
 
     private bool hasPickedEndWaypoint = false;
+    public bool readyToPickEndWaypoint = true;
 
     private void Awake()
     {
         player = GameObject.Find(playerName);
         waypoints = FindObjectsOfType<WaypointData>();
+        pathfinder = FindObjectOfType<Pathfinder>();
     }
 
     void Update()
@@ -44,7 +47,7 @@ public class StartEndWaypoints : MonoBehaviour
 
     private void PickEndWaypoint(Color endColor)
     {
-        if (!hasPickedEndWaypoint)
+        if (!hasPickedEndWaypoint && readyToPickEndWaypoint)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -53,6 +56,9 @@ public class StartEndWaypoints : MonoBehaviour
             {
                 endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
                 endWaypoint.GetComponent<MeshRenderer>().material.color = endColor;
+
+                readyToPickEndWaypoint = false;
+                pathfinder.isObserved = false;
             }
 
             if (Input.GetMouseButtonDown(0))
