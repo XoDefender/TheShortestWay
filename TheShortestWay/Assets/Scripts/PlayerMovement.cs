@@ -39,11 +39,6 @@ public class PlayerMovement : MonoBehaviour
         startEndWaypoints.HasPickedEndWaypoint = false;
         isGoing = false;
 
-        pathfinder.path.Clear();
-        pathfinder.exploredWaypoints.Clear();
-        pathfinder.toFrom.Clear();
-
-        pathfinder.isStartWaypointInQueue = false;
-        pathfinder.readyToFindPath = false;
+        pathfinder.DataReset();
     }
 }

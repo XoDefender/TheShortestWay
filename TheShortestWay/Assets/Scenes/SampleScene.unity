@@ -3198,7 +3198,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf65386d4f67af48885f9eec8340253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  readyToGetPath: 0
+  directions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  exploredWaypoints: []
+  path: []
+  readyToFindPath: 0
+  isStartWaypointInQueue: 0
+  isObserved: 0
+  areEqual: 1
 --- !u!114 &1109323851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3211,6 +3221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 188de0678eb878a419075f8416870c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypointLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  readyToPickEndWaypoint: 1
 --- !u!1001 &1121037405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4839,6 +4853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f62002a9cdc2ab4993ec009eb5a5b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathToFollow: []
 --- !u!1001 &1559504107
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StartEndWaypoints : MonoBehaviour
 {
+    [SerializeField] private LayerMask waypointLayerMask;
+
     private WaypointData startWaypoint;
     private WaypointData endWaypoint;
     private WaypointData[] waypoints;
@@ -52,7 +54,7 @@ public class StartEndWaypoints : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100, waypointLayerMask))
             {
                 endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
 
@@ -64,7 +66,7 @@ public class StartEndWaypoints : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (Physics.Raycast(ray, out hit, 100))
+                if (Physics.Raycast(ray, out hit, 100, waypointLayerMask))
                     hasPickedEndWaypoint = true;
             }
         }

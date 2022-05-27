@@ -82,7 +82,7 @@ public class Pathfinder : MonoBehaviour
                         {
                             exploringWaypoints.Enqueue(roadWaypoints[exploredWaypointCoordinates]);
                             exploredWaypoints.Add(roadWaypoints[exploredWaypointCoordinates]);
-                            roadWaypoints[exploredWaypointCoordinates].SetColor(Color.blue);
+                           /*roadWaypoints[exploredWaypointCoordinates].SetColor(Color.blue);*/
 
                             toFrom.Add(exploredWaypointCoordinates, exploringWaypoints.Peek());
                         }
@@ -129,12 +129,7 @@ public class Pathfinder : MonoBehaviour
         }
         else
         {
-            path.Clear();
-            exploredWaypoints.Clear();
-            toFrom.Clear();
-
-            isStartWaypointInQueue = false;
-            readyToFindPath = false;
+            DataReset();
         }
 
         if(areEqual && isObserved)
@@ -146,13 +141,23 @@ public class Pathfinder : MonoBehaviour
         {
             if(!areEqual)
             {
-                path.Clear();
-                exploredWaypoints.Clear();
-                toFrom.Clear();
-
-                isStartWaypointInQueue = false;
-                readyToFindPath = false;
+                DataReset();
             }
+        }
+    }
+
+    public void DataReset()
+    {
+        path.Clear();
+        exploredWaypoints.Clear();
+        toFrom.Clear();
+
+        isStartWaypointInQueue = false;
+        readyToFindPath = false;
+
+        foreach(WaypointData waypoint in waypoints)
+        {
+            waypoint.GetComponent<MeshRenderer>().material.color = Color.grey;
         }
     }
 }
