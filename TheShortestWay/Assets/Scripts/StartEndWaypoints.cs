@@ -26,11 +26,11 @@ public class StartEndWaypoints : MonoBehaviour
 
     void Update()
     {
-        PickStartWaypoint(Color.white, waypoints);
-        PickEndWaypoint(Color.black);
+        PickStartWaypoint(waypoints);
+        PickEndWaypoint();
     }
 
-    private void PickStartWaypoint(Color startColor, WaypointData[] waypoints)
+    private void PickStartWaypoint(WaypointData[] waypoints)
     {
         if (startWaypoint == null)
         {
@@ -38,7 +38,6 @@ public class StartEndWaypoints : MonoBehaviour
             {
                 if (Mathf.Approximately(waypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, player.transform.position.z))
                 {
-                    waypoint.GetComponent<MeshRenderer>().material.color = startColor;
                     startWaypoint = waypoint;
 
                     break;
@@ -47,7 +46,7 @@ public class StartEndWaypoints : MonoBehaviour
         }
     }
 
-    private void PickEndWaypoint(Color endColor)
+    private void PickEndWaypoint()
     {
         if (!hasPickedEndWaypoint && readyToPickEndWaypoint)
         {
@@ -58,10 +57,8 @@ public class StartEndWaypoints : MonoBehaviour
             {
                 endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
 
-                endWaypoint.GetComponent<MeshRenderer>().material.color = endColor;
-
                 readyToPickEndWaypoint = false;
-                pathfinder.isObserved = false;
+                pathfinder.IsObserved = false;
             }
 
             if (Input.GetMouseButtonDown(0))

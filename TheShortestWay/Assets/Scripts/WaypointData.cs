@@ -17,8 +17,7 @@ public class WaypointData : MonoBehaviour
 
     private void Update()
     {
-        if(!pathfinder.isObserved)
-            pathfinder.areEqual = AreEqual(startEndWaypoints.EndWaypoint);
+        pathfinder.AreEqual = AreEqual(startEndWaypoints.EndWaypoint);
     }
     public int GridSize { get { return gridSize; } }
 

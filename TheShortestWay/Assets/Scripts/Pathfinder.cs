@@ -8,28 +8,28 @@ public class Pathfinder : MonoBehaviour
     private WaypointData currentlyGoingFrom;
     private WaypointData[] waypoints;
 
-    public Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
-    public Dictionary<Vector2Int, WaypointData> toFrom = new Dictionary<Vector2Int, WaypointData>();
+    private Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
+    private Dictionary<Vector2Int, WaypointData> toFrom = new Dictionary<Vector2Int, WaypointData>();
 
-    public Vector2Int[] directions = {
+    private Vector2Int[] directions = {
         Vector2Int.up,
         Vector2Int.down,
         Vector2Int.left,
         Vector2Int.right
     };
 
-    public Queue<WaypointData> exploringWaypoints = new Queue<WaypointData>();
-    public List<WaypointData> exploredWaypoints = new List<WaypointData>();
-    public List<WaypointData> path = new List<WaypointData>();
+    private Queue<WaypointData> exploringWaypoints = new Queue<WaypointData>();
+    private List<WaypointData> exploredWaypoints = new List<WaypointData>();
+    private List<WaypointData> path = new List<WaypointData>();
 
     private PlayerMovement playerMovement;
 
-    public bool readyToFindPath = false;
+    private bool readyToFindPath = false;
 
-    public bool isStartWaypointInQueue = false;
+    private bool isStartWaypointInQueue = false;
 
-    public bool isObserved = false;
-    public bool areEqual = true;
+    private bool isObserved = false;
+    private bool areEqual = true;
 
     private void Awake()
     {
@@ -109,7 +109,6 @@ public class Pathfinder : MonoBehaviour
                     }
                 }
                 
-
                 if (!path.Contains(startEndWaypoints.StartWaypoint))
                     path.Add(startEndWaypoints.StartWaypoint);
 
@@ -160,4 +159,7 @@ public class Pathfinder : MonoBehaviour
             waypoint.GetComponent<MeshRenderer>().material.color = Color.grey;
         }
     }
+
+    public bool IsObserved { get { return isObserved; } set { isObserved = value; } }
+    public bool AreEqual { get { return areEqual; } set { areEqual = value; } }
 }
