@@ -41,4 +41,6 @@ public class PlayerMovement : MonoBehaviour
 
         pathfinder.DataReset();
     }
+
+    public bool IsGoing { get { return isGoing; } }
 }

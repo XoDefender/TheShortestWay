@@ -6,13 +6,11 @@ using UnityEngine;
 [RequireComponent (typeof(WaypointData))]
 public class WaypointEditing : MonoBehaviour
 {
-    private WaypointData waypoint;
-    private TextMesh textMesh;
+    private WaypointData waypointData;
 
     private void Awake()
     {
-        waypoint = GetComponent<WaypointData>();
-        textMesh = GetComponentInChildren<TextMesh>();
+        waypointData = GetComponent<WaypointData>();
     }
 
     void Update()
@@ -23,16 +21,13 @@ public class WaypointEditing : MonoBehaviour
 
     private void SnapToGrid()
     {
-        int gridSize = waypoint.GridSize;
-
-        transform.position = new Vector3(waypoint.GetGridPosition().x * gridSize, 0, waypoint.GetGridPosition().y * gridSize);
+        int gridSize = waypointData.GridSize;
+        transform.position = new Vector3(waypointData.GetGridPosition().x * gridSize, 0, waypointData.GetGridPosition().y * gridSize);
     }
 
     private void PutLabel()
     {
-        string labelText = waypoint.GetGridPosition().x.ToString() + "," + waypoint.GetGridPosition().y.ToString();
-
-        textMesh.text = labelText;
+        string labelText = waypointData.GetGridPosition().x.ToString() + "," + waypointData.GetGridPosition().y.ToString();
         gameObject.name = labelText;
     }
 }

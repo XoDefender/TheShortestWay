@@ -7,12 +7,24 @@ public class WaypointData : MonoBehaviour
     private WaypointData previousWaypoint;
     private Pathfinder pathfinder;
     private StartEndWaypoints startEndWaypoints;
+    private TextMesh textMesh;
+    private GameObject player;
+
     private const int gridSize = 10;
+    private const string playerName = "Player";
 
     private void Awake()
     {
         pathfinder = FindObjectOfType<Pathfinder>();
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
+        textMesh = GetComponentInChildren<TextMesh>();
+        player = GameObject.Find(playerName);
+    }
+
+    private void Start()
+    {
+        if (!Mathf.Approximately(transform.position.x, player.transform.position.x) || !Mathf.Approximately(transform.position.z, player.transform.position.z))
+            textMesh.text = SetCoins().ToString();
     }
 
     private void Update()
@@ -44,4 +56,11 @@ public class WaypointData : MonoBehaviour
             return false;
         }
     }
+
+    private int SetCoins()
+    {
+        return Random.Range(1, 20);
+    }
+
+    public TextMesh TextMesh { get { return textMesh; } set { textMesh = value; } }
 }
