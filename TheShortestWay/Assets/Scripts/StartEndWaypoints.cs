@@ -5,16 +5,17 @@ using UnityEngine;
 public class StartEndWaypoints : MonoBehaviour
 {
     [SerializeField] private LayerMask waypointLayerMask;
+    [SerializeField] private WaypointData endWaypoint;
 
     private WaypointData startWaypoint;
-    private WaypointData endWaypoint;
+    private WaypointData targetWaypoint;
     private WaypointData[] waypoints;
     private GameObject player;
     private Pathfinder pathfinder;
 
     private const string playerName = "Player";
 
-    private bool hasPickedEndWaypoint = false;
+    private bool hasPickedTargetWaypoint = false;
     public bool readyToPickEndWaypoint = true;
 
     private void Awake()
@@ -28,6 +29,10 @@ public class StartEndWaypoints : MonoBehaviour
     {
         PickStartWaypoint(waypoints);
         PickEndWaypoint();
+
+        endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
+        if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
+            Destroy(pathfinder);
     }
 
     private void PickStartWaypoint(WaypointData[] waypoints)
@@ -48,14 +53,14 @@ public class StartEndWaypoints : MonoBehaviour
 
     private void PickEndWaypoint()
     {
-        if (!hasPickedEndWaypoint && readyToPickEndWaypoint)
+        if (!hasPickedTargetWaypoint && readyToPickEndWaypoint)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, 100, waypointLayerMask))
             {
-                endWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
+                targetWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
 
                 readyToPickEndWaypoint = false;
                 pathfinder.IsObserved = false;
@@ -64,14 +69,14 @@ public class StartEndWaypoints : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 if (Physics.Raycast(ray, out hit, 100, waypointLayerMask))
-                    hasPickedEndWaypoint = true;
+                    hasPickedTargetWaypoint = true;
             }
         }
     }
 
     public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = null; } }
 
-    public WaypointData EndWaypoint { get { return endWaypoint; } set { endWaypoint = null; } }
+    public WaypointData TargetWaypoint { get { return targetWaypoint; } set { targetWaypoint = null; } }
 
-    public bool HasPickedEndWaypoint { get { return hasPickedEndWaypoint; } set { hasPickedEndWaypoint = value; } }
+    public bool HasPickedTargetWaypoint { get { return hasPickedTargetWaypoint; } set { hasPickedTargetWaypoint = value; } }
 }

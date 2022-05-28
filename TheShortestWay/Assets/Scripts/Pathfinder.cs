@@ -49,7 +49,7 @@ public class Pathfinder : MonoBehaviour
 
     void Update()
     {
-        BreadthFirstSearch(startEndWaypoints.StartWaypoint, startEndWaypoints.EndWaypoint);
+        BreadthFirstSearch(startEndWaypoints.StartWaypoint, startEndWaypoints.TargetWaypoint);
     }
 
     private void BreadthFirstSearch(WaypointData startWaypoint, WaypointData endWaypoint)
@@ -65,10 +65,10 @@ public class Pathfinder : MonoBehaviour
             if (!path.Contains(startEndWaypoints.StartWaypoint))
                 exploredWaypoints.Add(startEndWaypoints.StartWaypoint);
 
-            if (!path.Contains(startEndWaypoints.EndWaypoint))
-                path.Add(startEndWaypoints.EndWaypoint);
+            if (!path.Contains(startEndWaypoints.TargetWaypoint))
+                path.Add(startEndWaypoints.TargetWaypoint);
 
-            currentlyGoingFrom = startEndWaypoints.EndWaypoint;
+            currentlyGoingFrom = startEndWaypoints.TargetWaypoint;
 
             foreach (Vector2Int direction in directions)
             {

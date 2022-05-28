@@ -29,7 +29,7 @@ public class WaypointData : MonoBehaviour
 
     private void Update()
     {
-        pathfinder.AreEqual = AreEqual(startEndWaypoints.EndWaypoint);
+        pathfinder.AreEqual = AreEqual(startEndWaypoints.TargetWaypoint);
     }
     public int GridSize { get { return gridSize; } }
 
@@ -46,13 +46,13 @@ public class WaypointData : MonoBehaviour
         GetComponent<MeshRenderer>().material.color = color;
     }
 
-    public bool AreEqual(WaypointData endWaypoint)
+    public bool AreEqual(WaypointData targetWaypoint)
     {
-        if (endWaypoint == previousWaypoint)
+        if (targetWaypoint == previousWaypoint)
             return true;
         else
         {
-            previousWaypoint = endWaypoint;
+            previousWaypoint = targetWaypoint;
             return false;
         }
     }

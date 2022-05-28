@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startEndWaypoints.HasPickedEndWaypoint && !isGoing)
+        if (startEndWaypoints.HasPickedTargetWaypoint && !isGoing)
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         startEndWaypoints.StartWaypoint = null;
-        startEndWaypoints.HasPickedEndWaypoint = false;
+        startEndWaypoints.HasPickedTargetWaypoint = false;
         isGoing = false;
 
         pathfinder.DataReset();
