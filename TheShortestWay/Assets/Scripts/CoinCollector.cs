@@ -7,22 +7,21 @@ public class CoinCollector : MonoBehaviour
     private PlayerMovement playerMovement;
     private WaypointData[] waypoints;
     private GameObject player;
+    private ScoreManager scoreManager;
 
     private const string playerName = "Player";
-    private int coinsAmount = 0;
 
     private void Awake()
     {
         playerMovement = FindObjectOfType<PlayerMovement>();
         waypoints = FindObjectsOfType<WaypointData>();
         player = GameObject.Find(playerName);
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(coinsAmount);
-
         if (!playerMovement.IsGoing)
             PickUpCoin(waypoints);
     }
@@ -35,7 +34,11 @@ public class CoinCollector : MonoBehaviour
             {
                 if(waypoint.TextMesh.text != "")
                 {
-                    coinsAmount += int.Parse(waypoint.TextMesh.text);
+                    scoreManager.Score += int.Parse(waypoint.TextMesh.text);
+
+                    if(scoreManager.Score > scoreManager.Highscore)
+                        PlayerPrefs.SetInt("highscore", scoreManager.Score);
+
                     waypoint.TextMesh.text = "";
                 }
             }
