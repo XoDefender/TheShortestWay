@@ -22,7 +22,7 @@ public class CoinCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!playerMovement.IsGoing)
+       // if (!playerMovement.IsGoing)
             PickUpCoin(waypoints);
     }
 
