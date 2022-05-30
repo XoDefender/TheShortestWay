@@ -116,7 +116,7 @@ public class Pathfinder : MonoBehaviour
 
                 foreach (WaypointData waypoint in path)
                 {
-                    waypoint.GetComponent<MeshRenderer>().material.color = Color.red;
+                    waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
                 }
 
                 List<WaypointData> tempPath = new List<WaypointData>(path);
@@ -147,17 +147,18 @@ public class Pathfinder : MonoBehaviour
 
     public void DataReset()
     {
+        foreach(WaypointData waypoint in waypoints)
+        {
+            if(waypoint.GetComponent<MeshRenderer>().material.color == Color.blue)
+                waypoint.GetComponent<MeshRenderer>().material.color = Color.grey;
+        }
+
         path.Clear();
         exploredWaypoints.Clear();
         toFrom.Clear();
 
         isStartWaypointInQueue = false;
         readyToFindPath = false;
-
-        foreach(WaypointData waypoint in waypoints)
-        {
-            waypoint.GetComponent<MeshRenderer>().material.color = Color.grey;
-        }
     }
 
     public bool IsObserved { get { return isObserved; } set { isObserved = value; } }

@@ -27,12 +27,15 @@ public class StartEndWaypoints : MonoBehaviour
 
     void Update()
     {
-        PickStartWaypoint(waypoints);
-        PickEndWaypoint();
+        if(player)
+        {
+            PickStartWaypoint(waypoints);
+            PickEndWaypoint();
 
-        endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
-        if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
-            Destroy(pathfinder);
+            endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
+            if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
+                Destroy(pathfinder);
+        }
     }
 
     private void PickStartWaypoint(WaypointData[] waypoints)
