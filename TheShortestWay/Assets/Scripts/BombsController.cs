@@ -34,7 +34,7 @@ public class BombsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int bombsAmount = 5;
+        int bombsAmount = 10;
 
         waypoints = FindObjectsOfType<WaypointData>();
 
@@ -64,7 +64,7 @@ public class BombsController : MonoBehaviour
     {
         foreach (WaypointData bomb in bombs)
         {
-            bomb.GetComponent<MeshRenderer>().material.color = Color.red;
+            //bomb.GetComponent<MeshRenderer>().material.color = Color.red;
 
             if (Mathf.Approximately(bomb.transform.position.x, player.transform.position.x) && Mathf.Approximately(bomb.transform.position.z, player.transform.position.z))
             {
@@ -75,6 +75,8 @@ public class BombsController : MonoBehaviour
                     explodedBombs.Add(bomb);
                     playerHealth.HealthPoints -= HitPoints;
                 }
+
+                bomb.GetComponent<MeshRenderer>().material.color = Color.red;
 
                 foreach (Vector2Int direction in directions)
                 {

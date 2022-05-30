@@ -27,7 +27,7 @@ public class StartEndWaypoints : MonoBehaviour
 
     void Update()
     {
-        if(player)
+        if (player)
         {
             PickStartWaypoint(waypoints);
             PickEndWaypoint();
@@ -78,6 +78,8 @@ public class StartEndWaypoints : MonoBehaviour
     }
 
     public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = null; } }
+
+    public WaypointData EndWaypoint { get { return endWaypoint; } }
 
     public WaypointData TargetWaypoint { get { return targetWaypoint; } set { targetWaypoint = null; } }
 

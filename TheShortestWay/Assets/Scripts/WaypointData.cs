@@ -29,6 +29,7 @@ public class WaypointData : MonoBehaviour
 
     private void Update()
     {
+        startEndWaypoints.EndWaypoint.GetComponentInChildren<TextMesh>().text = "";
         pathfinder.AreEqual = AreEqual(startEndWaypoints.TargetWaypoint);
     }
     public int GridSize { get { return gridSize; } }

@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private float timeStart = 10;
+    private float timeStart = 60;
     private const string playerName = "Player";
 
     void Start()
