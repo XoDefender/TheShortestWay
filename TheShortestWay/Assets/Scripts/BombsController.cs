@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BombsController : MonoBehaviour
 {
+    private PlayerHealth playerHealth;
+    private List<WaypointData> explodedBombs = new List<WaypointData>();
     private HashSet<WaypointData> bombs = new HashSet<WaypointData>();
     private Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
     private WaypointData[] waypoints;
@@ -21,9 +23,12 @@ public class BombsController : MonoBehaviour
 
     private const string playerName = "Player";
 
+    private int HitPoints = 50;
+
     private void Awake()
     {
         player = GameObject.Find(playerName);
+        playerHealth = player.GetComponent<PlayerHealth>();
     }
 
     // Start is called before the first frame update
@@ -34,7 +39,12 @@ public class BombsController : MonoBehaviour
         waypoints = FindObjectsOfType<WaypointData>();
 
         while(bombs.Count < bombsAmount)
-            bombs.Add(waypoints[Random.Range(0, waypoints.Length)]);
+        {
+            WaypointData randomBomb = waypoints[Random.Range(0, waypoints.Length)];
+
+            if (!Mathf.Approximately(randomBomb.transform.position.x, player.transform.position.x) && !Mathf.Approximately(randomBomb.transform.position.z, player.transform.position.z))
+                bombs.Add(randomBomb);
+        }
 
         foreach (WaypointData waypoint in waypoints)
         {
@@ -46,21 +56,33 @@ public class BombsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (player)
+            Bombs();
+    }
+
+    private void Bombs()
+    {
         foreach (WaypointData bomb in bombs)
         {
             bomb.GetComponent<MeshRenderer>().material.color = Color.red;
 
-            if(Mathf.Approximately(bomb.transform.position.x, player.transform.position.x) && Mathf.Approximately(bomb.transform.position.z, player.transform.position.z))
+            if (Mathf.Approximately(bomb.transform.position.x, player.transform.position.x) && Mathf.Approximately(bomb.transform.position.z, player.transform.position.z))
             {
                 WaypointData exploringBomb = bomb;
+
+                if(!explodedBombs.Contains(bomb))
+                {
+                    explodedBombs.Add(bomb);
+                    playerHealth.HealthPoints -= HitPoints;
+                }
 
                 foreach (Vector2Int direction in directions)
                 {
                     Vector2Int exploredBombCoordinates = exploringBomb.GetGridPosition() + direction;
 
-                    if(roadWaypoints.ContainsKey(exploredBombCoordinates))
+                    if (roadWaypoints.ContainsKey(exploredBombCoordinates))
                     {
-                        if(bombs.Contains(roadWaypoints[exploredBombCoordinates]))
+                        if (bombs.Contains(roadWaypoints[exploredBombCoordinates]))
                             roadWaypoints[exploredBombCoordinates].SetColor(Color.red);
                         else
                             roadWaypoints[exploredBombCoordinates].SetColor(Color.green);

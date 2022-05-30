@@ -120,7 +120,7 @@ public class Pathfinder : MonoBehaviour
                 }
 
                 List<WaypointData> tempPath = new List<WaypointData>(path);
-                playerMovement.pathToFollow = tempPath;
+                playerMovement.PathToFollow = tempPath;
 
                 isObserved = true;
                 startEndWaypoints.readyToPickEndWaypoint = true;
