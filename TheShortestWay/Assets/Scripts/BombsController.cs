@@ -7,19 +7,9 @@ public class BombsController : MonoBehaviour
     private PlayerHealth playerHealth;
     private List<WaypointData> explodedBombs = new List<WaypointData>();
     private HashSet<WaypointData> bombs = new HashSet<WaypointData>();
-    private Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
     private WaypointData[] waypoints;
     private GameObject player;
-    private Vector2Int[] directions = {
-        Vector2Int.up,
-        Vector2Int.down,
-        Vector2Int.left,
-        Vector2Int.right,
-        new Vector2Int(1, 1),
-        new Vector2Int(1, -1),
-        new Vector2Int(-1, 1),
-        new Vector2Int(-1, -1),
-    };
+    private StartEndWaypoints startEndWaypoints;
 
     private const string playerName = "Player";
 
@@ -29,12 +19,13 @@ public class BombsController : MonoBehaviour
     {
         player = GameObject.Find(playerName);
         playerHealth = player.GetComponent<PlayerHealth>();
+        startEndWaypoints = GetComponent<StartEndWaypoints>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        int bombsAmount = 10;
+        int bombsAmount = 20;
 
         waypoints = FindObjectsOfType<WaypointData>();
 
@@ -42,14 +33,8 @@ public class BombsController : MonoBehaviour
         {
             WaypointData randomBomb = waypoints[Random.Range(0, waypoints.Length)];
 
-            if (!Mathf.Approximately(randomBomb.transform.position.x, player.transform.position.x) && !Mathf.Approximately(randomBomb.transform.position.z, player.transform.position.z))
+            if (!Mathf.Approximately(randomBomb.transform.position.x, player.transform.position.x) && !Mathf.Approximately(randomBomb.transform.position.z, player.transform.position.z) && randomBomb.transform.position != startEndWaypoints.EndWaypoint.transform.position)
                 bombs.Add(randomBomb);
-        }
-
-        foreach (WaypointData waypoint in waypoints)
-        {
-            if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
-                roadWaypoints.Add(waypoint.GetGridPosition(), waypoint);
         }
     }
 
@@ -64,12 +49,10 @@ public class BombsController : MonoBehaviour
     {
         foreach (WaypointData bomb in bombs)
         {
-            //bomb.GetComponent<MeshRenderer>().material.color = Color.red;
+            bomb.GetComponent<MeshRenderer>().material.color = Color.red;
 
             if (Mathf.Approximately(bomb.transform.position.x, player.transform.position.x) && Mathf.Approximately(bomb.transform.position.z, player.transform.position.z))
             {
-                WaypointData exploringBomb = bomb;
-
                 if(!explodedBombs.Contains(bomb))
                 {
                     explodedBombs.Add(bomb);
@@ -77,19 +60,6 @@ public class BombsController : MonoBehaviour
                 }
 
                 bomb.GetComponent<MeshRenderer>().material.color = Color.red;
-
-                foreach (Vector2Int direction in directions)
-                {
-                    Vector2Int exploredBombCoordinates = exploringBomb.GetGridPosition() + direction;
-
-                    if (roadWaypoints.ContainsKey(exploredBombCoordinates))
-                    {
-                        if (bombs.Contains(roadWaypoints[exploredBombCoordinates]))
-                            roadWaypoints[exploredBombCoordinates].SetColor(Color.red);
-                        else
-                            roadWaypoints[exploredBombCoordinates].SetColor(Color.green);
-                    }
-                }
             }
         }
     }
