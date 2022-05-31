@@ -14,6 +14,7 @@ public class TrapsController : MonoBehaviour
     private StartEndWaypoints startEndWaypoints;
 
     private const string playerName = "Player";
+    private const string trapName = "Pf_Trap_Needle(Clone)";
 
     private int HitPoints = 50;
 
@@ -47,6 +48,8 @@ public class TrapsController : MonoBehaviour
                 if(!triggeredTraps.Contains(trap))
                 {
                     triggeredTraps.Add(trap);
+                    trap.transform.Find(trapName).GetComponent<Animation>().Play();
+
                     playerHealth.HealthPoints -= HitPoints;
                 }
             }
@@ -57,7 +60,8 @@ public class TrapsController : MonoBehaviour
     {
         foreach(WaypointData trap in traps)
         {
-            Instantiate(trapPrefab, new Vector3(trap.transform.position.x, trap.transform.position.y + 5, trap.transform.position.z), Quaternion.identity);
+            var newTrap = Instantiate(trapPrefab, new Vector3(trap.transform.position.x, trap.transform.position.y + 5, trap.transform.position.z), Quaternion.identity);
+            newTrap.transform.parent = trap.transform;
         }
     }
 

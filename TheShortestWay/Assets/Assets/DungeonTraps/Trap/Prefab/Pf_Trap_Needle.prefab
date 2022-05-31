@@ -50,7 +50,7 @@ Animation:
   - {fileID: 7400000, guid: 2badb873ba409044db8e5b1246871dd2, type: 2}
   - {fileID: 7400000, guid: 5b338c3066ff22540915b5969709eb8a, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!1 &115018
