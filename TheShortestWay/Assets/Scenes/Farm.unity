@@ -9823,6 +9823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47dc528cb39f9ec4a90635b0c024a4aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trapPrefab: {fileID: 115016, guid: afd19ab1d4bb70b499bb2f62171a522d, type: 3}
 --- !u!114 &1331964309
 MonoBehaviour:
   m_ObjectHideFlags: 0

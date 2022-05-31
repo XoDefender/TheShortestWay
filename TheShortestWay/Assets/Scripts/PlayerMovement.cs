@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private StartEndWaypoints startEndWaypoints;
     private Pathfinder pathfinder;
     private List<WaypointData> pathToFollow;
-    private BombsController bombsController;
+    private TrapsController bombsController;
 
     private bool isGoing = false;
 
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     {
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
         pathfinder = FindObjectOfType<Pathfinder>();
-        bombsController = FindObjectOfType<BombsController>();
+        bombsController = FindObjectOfType<TrapsController>();
     }
 
     // Update is called once per frame
