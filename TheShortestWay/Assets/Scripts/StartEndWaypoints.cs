@@ -30,7 +30,7 @@ public class StartEndWaypoints : MonoBehaviour
         if (player)
         {
             PickStartWaypoint(waypoints);
-            PickEndWaypoint();
+            PickTargetWaypoint();
 
             endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
             if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
@@ -54,14 +54,14 @@ public class StartEndWaypoints : MonoBehaviour
         }
     }
 
-    private void PickEndWaypoint()
+    private void PickTargetWaypoint()
     {
         if (!hasPickedTargetWaypoint && readyToPickEndWaypoint)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100, waypointLayerMask))
+            if (Physics.Raycast(ray, out hit, 1000, waypointLayerMask))
             {
                 targetWaypoint = hit.collider.gameObject.GetComponent<WaypointData>();
 
