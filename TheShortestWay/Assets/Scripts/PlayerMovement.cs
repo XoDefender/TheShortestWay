@@ -25,9 +25,6 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(StartMovement());
             isGoing = true;
-
-            animator.SetBool("IsWalking", true);
-            animator.SetBool("IsIdling", false);
         }
     }
 
@@ -37,31 +34,42 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 targetVector = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z) - transform.position;
             Vector3 startPosition = transform.position;
+            
+            if(targetVector != new Vector3(0, 0, 0))
+                transform.forward = targetVector;
 
-            int iterationsCount = 60;
+            int movingSpeed = 170;
 
-            for(int i = 1; i <= iterationsCount; i++)
+            for(int i = 1; i <= movingSpeed; i++)
             {
-                float t = 1f * i / iterationsCount;
+                float t = 1f * i / movingSpeed;
 
                 transform.position = startPosition + targetVector * t;
+
+                if(i == 20)
+                {
+                    animator.SetBool("IsWalking", true);
+                    animator.SetBool("IsIdling", false);
+                }
+                
+                if(i == movingSpeed - 5)
+                {
+                    animator.SetBool("IsWalking", false);
+                    animator.SetBool("IsIdling", true);
+                }
 
                 yield return null;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return null; 
         }
 
         startEndWaypoints.StartWaypoint = null;
         startEndWaypoints.HasPickedTargetWaypoint = false;
         isGoing = false;
 
-        animator.SetBool("IsWalking", false);
-        animator.SetBool("IsIdling", true);
-
         pathfinder.DataReset();
     }
 
-    public bool IsGoing { get { return isGoing; } }
     public List<WaypointData> PathToFollow { set { pathToFollow = value; } }
 }
