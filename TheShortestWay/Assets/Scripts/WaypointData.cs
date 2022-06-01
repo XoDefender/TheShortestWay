@@ -9,6 +9,7 @@ public class WaypointData : MonoBehaviour
     private StartEndWaypoints startEndWaypoints;
     private TextMesh textMesh;
     private GameObject player;
+    private ChestController chestController;
 
     private const int gridSize = 10;
     private const string playerName = "Player";
@@ -19,6 +20,7 @@ public class WaypointData : MonoBehaviour
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
         textMesh = GetComponentInChildren<TextMesh>();
         player = GameObject.Find(playerName);
+        chestController = FindObjectOfType<ChestController>();
     }
 
     private void Start()
@@ -29,7 +31,14 @@ public class WaypointData : MonoBehaviour
 
     private void Update()
     {
+        Vector2 waypointPosition = new Vector2(transform.position.x, transform.position.z);
+        Vector2 chestPosition = new Vector2(chestController.transform.position.x, chestController.transform.position.z);
+
+        if (waypointPosition == chestPosition)
+            textMesh.text = "";
+
         startEndWaypoints.EndWaypoint.GetComponentInChildren<TextMesh>().text = "";
+
         pathfinder.AreEqual = AreEqual(startEndWaypoints.TargetWaypoint);
     }
     public int GridSize { get { return gridSize; } }
