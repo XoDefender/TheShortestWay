@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private StartEndWaypoints startEndWaypoints;
     private Pathfinder pathfinder;
     private List<WaypointData> pathToFollow;
-    private TrapsController bombsController;
+    private Animator animator;
 
     private bool isGoing = false;
 
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     {
         startEndWaypoints = FindObjectOfType<StartEndWaypoints>();
         pathfinder = FindObjectOfType<Pathfinder>();
-        bombsController = FindObjectOfType<TrapsController>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -25,6 +25,9 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(StartMovement());
             isGoing = true;
+
+            animator.SetBool("IsWalking", true);
+            animator.SetBool("IsIdling", false);
         }
     }
 
@@ -32,14 +35,29 @@ public class PlayerMovement : MonoBehaviour
     {
         foreach (WaypointData waypoint in pathToFollow)
         {
-            transform.position = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z);
+            Vector3 targetVector = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z) - transform.position;
+            Vector3 startPosition = transform.position;
 
-            yield return new WaitForSeconds(1);
+            int iterationsCount = 60;
+
+            for(int i = 1; i <= iterationsCount; i++)
+            {
+                float t = 1f * i / iterationsCount;
+
+                transform.position = startPosition + targetVector * t;
+
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(1f);
         }
 
         startEndWaypoints.StartWaypoint = null;
         startEndWaypoints.HasPickedTargetWaypoint = false;
         isGoing = false;
+
+        animator.SetBool("IsWalking", false);
+        animator.SetBool("IsIdling", true);
 
         pathfinder.DataReset();
     }
