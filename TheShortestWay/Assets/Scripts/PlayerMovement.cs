@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private List<WaypointData> pathToFollow;
     private Animator animator;
 
+    private float rotationSpeed;
     private bool isGoing = false;
 
     private void Awake()
@@ -35,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 targetVector = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z) - transform.position;
             Vector3 startPosition = transform.position;
             
-            if(targetVector != new Vector3(0, 0, 0))
+            if(targetVector != Vector3.zero)
                 transform.forward = targetVector;
 
             int movingSpeed = 170;

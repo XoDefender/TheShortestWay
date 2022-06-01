@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CoinCollector : MonoBehaviour
 {
-    private PlayerMovement playerMovement;
     private WaypointData[] waypoints;
     private GameObject player;
     private ScoreManager scoreManager;
@@ -13,7 +12,6 @@ public class CoinCollector : MonoBehaviour
 
     private void Awake()
     {
-        playerMovement = FindObjectOfType<PlayerMovement>();
         waypoints = FindObjectsOfType<WaypointData>();
         player = GameObject.Find(playerName);
         scoreManager = FindObjectOfType<ScoreManager>();
@@ -22,8 +20,7 @@ public class CoinCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // if (!playerMovement.IsGoing)
-            PickUpCoin(waypoints);
+         PickUpCoin(waypoints);
     }
 
     private void PickUpCoin(WaypointData[] waypoints)
@@ -35,10 +32,6 @@ public class CoinCollector : MonoBehaviour
                 if(waypoint.TextMesh.text != "")
                 {
                     scoreManager.Score += int.Parse(waypoint.TextMesh.text);
-
-                    if(scoreManager.Score > scoreManager.Highscore)
-                        PlayerPrefs.SetInt("highscore", scoreManager.Score);
-
                     waypoint.TextMesh.text = "";
                 }
             }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private int healthPoints = 100;
+    private int healthPoints = 200;
 
     private const string playerName = "Player";
 

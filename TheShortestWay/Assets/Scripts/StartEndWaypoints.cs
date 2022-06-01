@@ -12,6 +12,7 @@ public class StartEndWaypoints : MonoBehaviour
     private WaypointData[] waypoints;
     private GameObject player;
     private Pathfinder pathfinder;
+    private ChestController chestController;
 
     private const string playerName = "Player";
 
@@ -23,6 +24,7 @@ public class StartEndWaypoints : MonoBehaviour
         player = GameObject.Find(playerName);
         waypoints = FindObjectsOfType<WaypointData>();
         pathfinder = FindObjectOfType<Pathfinder>();
+        chestController = FindObjectOfType<ChestController>();
     }
 
     void Update()
@@ -33,8 +35,12 @@ public class StartEndWaypoints : MonoBehaviour
             PickTargetWaypoint();
 
             endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
-            if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
-                Destroy(pathfinder);
+
+            if(chestController.HasOpened)
+            {
+                if (Mathf.Approximately(endWaypoint.transform.position.x, player.transform.position.x) && Mathf.Approximately(endWaypoint.transform.position.z, player.transform.position.z))
+                    Destroy(pathfinder);
+            }
         }
     }
 
