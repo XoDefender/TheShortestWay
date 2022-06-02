@@ -12,6 +12,7 @@ public class TrapsController : MonoBehaviour
     private WaypointData[] waypoints;
     private GameObject player;
     private StartEndWaypoints startEndWaypoints;
+    private ChestController chestController;
 
     private const string playerName = "Player";
     private const string trapName = "Pf_Trap_Needle(Clone)";
@@ -23,6 +24,7 @@ public class TrapsController : MonoBehaviour
         player = GameObject.Find(playerName);
         playerHealth = player.GetComponent<PlayerHealth>();
         startEndWaypoints = GetComponent<StartEndWaypoints>();
+        chestController = FindObjectOfType<ChestController>();
     }
 
     // Start is called before the first frame update
@@ -75,7 +77,11 @@ public class TrapsController : MonoBehaviour
         {
             WaypointData randomTrap = waypoints[Random.Range(0, waypoints.Length)];
 
-            if (!Mathf.Approximately(randomTrap.transform.position.x, player.transform.position.x) && !Mathf.Approximately(randomTrap.transform.position.z, player.transform.position.z) && randomTrap.transform.position != startEndWaypoints.EndWaypoint.transform.position)
+            if (!Mathf.Approximately(randomTrap.transform.position.x, player.transform.position.x) 
+                && !Mathf.Approximately(randomTrap.transform.position.z, player.transform.position.z) 
+                && randomTrap.transform.position != startEndWaypoints.EndWaypoint.transform.position 
+                && !Mathf.Approximately(randomTrap.transform.position.x, chestController.transform.position.x) 
+                && !Mathf.Approximately(randomTrap.transform.position.z, chestController.transform.position.z))
                 traps.Add(randomTrap);
         }
     }
