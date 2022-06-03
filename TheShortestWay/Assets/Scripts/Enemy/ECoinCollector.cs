@@ -52,6 +52,8 @@ public class ECoinCollector : MonoBehaviour
                     {
                         waypoint.GetComponent<MeshRenderer>().material.color = Color.green;
                     }
+
+                    break;
                 }
             }
         }

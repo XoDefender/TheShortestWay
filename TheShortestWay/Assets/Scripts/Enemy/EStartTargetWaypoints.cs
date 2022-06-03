@@ -8,6 +8,7 @@ public class EStartTargetWaypoints : MonoBehaviour
     private EWaypointData startWaypoint;
     private EWaypointData targetWaypoint;
     private GameObject enemy;
+    private EPathfinder pathfinder;
 
     private const string enemyName = "Enemy";
 
@@ -16,6 +17,7 @@ public class EStartTargetWaypoints : MonoBehaviour
 
     private void Awake()
     {
+        pathfinder = FindObjectOfType<EPathfinder>();
         waypoints = FindObjectsOfType<EWaypointData>();
         enemy = GameObject.Find(enemyName);
     }
@@ -54,6 +56,8 @@ public class EStartTargetWaypoints : MonoBehaviour
             targetWaypointNumber += 1;
 
             readyToPickTargetWaypoint = false;
+
+            pathfinder.Found = false;
         }
     }
 

@@ -25,7 +25,7 @@ public class EPathfinder : MonoBehaviour
 
     private bool readyToFindPath = false;
     private bool isStartWaypointInQueue = false;
-    private bool isObserved = false;
+    private bool found = false;
 
     private void Awake()
     {
@@ -41,6 +41,7 @@ public class EPathfinder : MonoBehaviour
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
                 roadWaypoints.Add(waypoint.GetGridPosition(), waypoint);
         }
+
     }
 
     void Update()
@@ -50,81 +51,86 @@ public class EPathfinder : MonoBehaviour
 
     private void BreadthFirstSearch(EWaypointData startWaypoint, bool readyToPickTargetWaypoint)
     {
-        if (startWaypoint && !readyToPickTargetWaypoint)
+        while (!found)
         {
-            if (!isStartWaypointInQueue)
+            if (startWaypoint && !readyToPickTargetWaypoint)
             {
-                exploringWaypoints.Enqueue(startTargetWaypoints.StartWaypoint);
-                isStartWaypointInQueue = true;
-            }
-
-            if (!path.Contains(startTargetWaypoints.StartWaypoint))
-                exploredWaypoints.Add(startTargetWaypoints.StartWaypoint);
-
-            if (!path.Contains(startTargetWaypoints.TargetWaypoint))
-                path.Add(startTargetWaypoints.TargetWaypoint);
-
-            currentlyGoingFrom = startTargetWaypoints.TargetWaypoint;
-
-            foreach (Vector2Int direction in directions)
-            {
-                if (exploringWaypoints.Count != 0)
+                if (!isStartWaypointInQueue)
                 {
-                    Vector2Int exploredWaypointCoordinates = exploringWaypoints.Peek().GetGridPosition() + direction;
-
-                    if (roadWaypoints.ContainsKey(exploredWaypointCoordinates))
-                    {
-                        if (!exploredWaypoints.Contains(roadWaypoints[exploredWaypointCoordinates]) && !exploringWaypoints.Contains(roadWaypoints[exploredWaypointCoordinates]))
-                        {
-                            exploringWaypoints.Enqueue(roadWaypoints[exploredWaypointCoordinates]);
-                            exploredWaypoints.Add(roadWaypoints[exploredWaypointCoordinates]);
-                            toFrom.Add(exploredWaypointCoordinates, exploringWaypoints.Peek());
-                        }
-                    }
-                }
-            }
-
-            if (exploringWaypoints.Count != 0)
-            {
-                exploringWaypoints.Dequeue();
-                readyToFindPath = false;
-            }
-            else
-                readyToFindPath = true;
-
-            if (readyToFindPath)
-            {
-                if (toFrom.ContainsKey(currentlyGoingFrom.GetGridPosition()))
-                {
-                    while (toFrom[currentlyGoingFrom.GetGridPosition()] != startTargetWaypoints.StartWaypoint)
-                    {
-                        path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
-                        currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
-                    }
+                    exploringWaypoints.Enqueue(startTargetWaypoints.StartWaypoint);
+                    isStartWaypointInQueue = true;
                 }
 
                 if (!path.Contains(startTargetWaypoints.StartWaypoint))
-                    path.Add(startTargetWaypoints.StartWaypoint);
+                    exploredWaypoints.Add(startTargetWaypoints.StartWaypoint);
 
-                path.Reverse();
+                if (!path.Contains(startTargetWaypoints.TargetWaypoint))
+                    path.Add(startTargetWaypoints.TargetWaypoint);
 
-                List<EWaypointData> tempPath = new List<EWaypointData>(path);
-                coinCollector.AllPaths.Add(tempPath);
+                currentlyGoingFrom = startTargetWaypoints.TargetWaypoint;
 
-                startTargetWaypoints.ReadyToPickTargetWaypoint = true;
-                isObserved = true;
-
-                foreach (EWaypointData waypoint in path)
+                foreach (Vector2Int direction in directions)
                 {
-                    waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
+                    if (exploringWaypoints.Count != 0)
+                    {
+                        Vector2Int exploredWaypointCoordinates = exploringWaypoints.Peek().GetGridPosition() + direction;
+
+                        if (roadWaypoints.ContainsKey(exploredWaypointCoordinates))
+                        {
+                            if (!exploredWaypoints.Contains(roadWaypoints[exploredWaypointCoordinates]) && !exploringWaypoints.Contains(roadWaypoints[exploredWaypointCoordinates]))
+                            {
+                                exploringWaypoints.Enqueue(roadWaypoints[exploredWaypointCoordinates]);
+                                exploredWaypoints.Add(roadWaypoints[exploredWaypointCoordinates]);
+                                toFrom.Add(exploredWaypointCoordinates, exploringWaypoints.Peek());
+                            }
+                        }
+                    }
+                }
+
+                if (exploringWaypoints.Count != 0)
+                {
+                    exploringWaypoints.Dequeue();
+                    readyToFindPath = false;
+                }
+                else
+                { 
+                    readyToFindPath = true;
+                    found = true;
+
+                    FindPath();
+                    DataReset();
                 }
             }
         }
-        
-        if(isObserved)
+    }
+
+    private void FindPath()
+    {
+        if (readyToFindPath)
         {
-            DataReset();
-            isObserved = false;
+            if (toFrom.ContainsKey(currentlyGoingFrom.GetGridPosition()))
+            {
+                while (toFrom[currentlyGoingFrom.GetGridPosition()] != startTargetWaypoints.StartWaypoint)
+                {
+                    path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
+                    currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
+                }
+            }
+
+            if (!path.Contains(startTargetWaypoints.StartWaypoint))
+                path.Add(startTargetWaypoints.StartWaypoint);
+
+            path.Reverse();
+
+            List<EWaypointData> tempPath = new List<EWaypointData>(path);
+            coinCollector.AllPaths.Add(tempPath);
+
+            startTargetWaypoints.ReadyToPickTargetWaypoint = true;
+
+            foreach (EWaypointData waypoint in path)
+            {
+                waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
+            }
         }
     }
 
@@ -137,4 +143,6 @@ public class EPathfinder : MonoBehaviour
         isStartWaypointInQueue = false;
         readyToFindPath = false;
     }
+
+    public bool Found { set{ found = value; } }
 }
