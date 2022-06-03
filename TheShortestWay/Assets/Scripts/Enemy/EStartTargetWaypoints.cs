@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class EStartTargetWaypoints : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private EWaypointData[] waypoints;
+
+    private bool readyToPickTargetWaypoint = true;
+    private int targetWaypointNumber = 0;
+
+    private void Awake()
     {
-        
+        waypoints = FindObjectsOfType<EWaypointData>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(readyToPickTargetWaypoint && targetWaypointNumber < waypoints.Length)
+        {
+            waypoints[targetWaypointNumber].SetColor(Color.red);
+
+            targetWaypointNumber += 1;
+        }
     }
 }
