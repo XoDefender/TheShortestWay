@@ -31,13 +31,7 @@ public class WaypointData : MonoBehaviour
 
     private void Update()
     {
-        Vector2 waypointPosition = new Vector2(transform.position.x, transform.position.z);
-        Vector2 chestPosition = new Vector2(chestController.transform.position.x, chestController.transform.position.z);
-
-        if (waypointPosition == chestPosition)
-            textMesh.text = "";
-
-        startEndWaypoints.EndWaypoint.GetComponentInChildren<TextMesh>().text = "";
+        DeleteText();
 
         pathfinder.AreEqual = AreEqual(startEndWaypoints.TargetWaypoint);
     }
@@ -70,6 +64,17 @@ public class WaypointData : MonoBehaviour
     private int SetCoins()
     {
         return Random.Range(1, 20);
+    }
+
+    private void DeleteText()
+    {
+        Vector2 waypointPosition = new Vector2(transform.position.x, transform.position.z);
+        Vector2 chestPosition = new Vector2(chestController.transform.position.x, chestController.transform.position.z);
+
+        if (waypointPosition == chestPosition)
+            textMesh.text = "";
+
+        startEndWaypoints.EndWaypoint.GetComponentInChildren<TextMesh>().text = "";
     }
 
     public TextMesh TextMesh { get { return textMesh; } set { textMesh = value; } }

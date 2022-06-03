@@ -161,6 +161,10 @@ public class Pathfinder : MonoBehaviour
         readyToFindPath = false;
     }
 
-    public bool IsObserved { get { return isObserved; } set { isObserved = value; } }
+    public bool IsObserved { get {
+            readyToFindPath = true;
+            Debug.Log("kjdfvbkfj");
+            return isObserved; 
+        } set { isObserved = value; } }
     public bool AreEqual { get { return areEqual; } set { areEqual = value; } }
 }
