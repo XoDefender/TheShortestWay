@@ -7,6 +7,7 @@ public class EPathfinder : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EWaypointData currentlyGoingFrom;
     private EWaypointData[] waypoints;
+    private ECoinCollector coinCollector;
 
     private Dictionary<Vector2Int, EWaypointData> roadWaypoints = new Dictionary<Vector2Int, EWaypointData>();
     private Dictionary<Vector2Int, EWaypointData> toFrom = new Dictionary<Vector2Int, EWaypointData>();
@@ -30,6 +31,7 @@ public class EPathfinder : MonoBehaviour
     {
         startTargetWaypoints = GetComponent<EStartTargetWaypoints>();
         waypoints = FindObjectsOfType<EWaypointData>();
+        coinCollector = FindObjectOfType<ECoinCollector>();
     }
 
     void Start()
@@ -105,6 +107,9 @@ public class EPathfinder : MonoBehaviour
                     path.Add(startTargetWaypoints.StartWaypoint);
 
                 path.Reverse();
+
+                List<EWaypointData> tempPath = new List<EWaypointData>(path);
+                coinCollector.AllPaths.Add(tempPath);
 
                 startTargetWaypoints.ReadyToPickTargetWaypoint = true;
                 isObserved = true;
