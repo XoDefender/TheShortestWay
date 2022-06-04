@@ -7,20 +7,30 @@ public class ECoinCollector : MonoBehaviour
     private EWaypointData[] waypoints;
     private EPathfinder pathfinder;
     private EnemyMovement enemyMovement;
+    private EStartTargetWaypoints startTargetWaypoints;
 
     private int maxCoins = 0;
+    private int pickedCoins = 0;
+    private int requiredCoins = 500;
 
     private void Awake()
     {
         waypoints = FindObjectsOfType<EWaypointData>();
         enemyMovement = FindObjectOfType<EnemyMovement>();
         pathfinder = FindObjectOfType<EPathfinder>();
+        startTargetWaypoints = FindObjectOfType<EStartTargetWaypoints>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SelectTheGreatestPath();
+        Debug.Log(pickedCoins);
+
+        if (pickedCoins <= requiredCoins)
+            SelectTheGreatestPath();
+        else
+            startTargetWaypoints.ReadyToPickEndWaypoint = true;
+
         PickUpCoin(waypoints);
     }
 
@@ -58,9 +68,7 @@ public class ECoinCollector : MonoBehaviour
                     maxCoins = 0;
 
                     foreach (EWaypointData waypoint in path)
-                    {
                         waypoint.GetComponent<MeshRenderer>().material.color = Color.green;
-                    }
 
                     break;
                 }
@@ -76,9 +84,13 @@ public class ECoinCollector : MonoBehaviour
             {
                 if (waypoint.TextMesh.text != "")
                 {
+                    pickedCoins += int.Parse(waypoint.TextMesh.text);
                     waypoint.TextMesh.text = "";
                 }
             }
         }
     }
+
+    public int RequiredCoins { get { return requiredCoins; } }
+    public int PickedCoins { get { return pickedCoins; } }
 }

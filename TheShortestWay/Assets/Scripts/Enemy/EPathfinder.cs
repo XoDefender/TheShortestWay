@@ -7,7 +7,7 @@ public class EPathfinder : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EWaypointData currentlyGoingFrom;
     private EWaypointData[] waypoints;
-    private ECoinCollector coinCollector;
+    private EnemyMovement enemyMovement;
 
     private Dictionary<Vector2Int, EWaypointData> roadWaypoints = new Dictionary<Vector2Int, EWaypointData>();
     private Dictionary<Vector2Int, EWaypointData> toFrom = new Dictionary<Vector2Int, EWaypointData>();
@@ -32,7 +32,7 @@ public class EPathfinder : MonoBehaviour
     {
         startTargetWaypoints = GetComponent<EStartTargetWaypoints>();
         waypoints = FindObjectsOfType<EWaypointData>();
-        coinCollector = FindObjectOfType<ECoinCollector>();
+        enemyMovement = FindObjectOfType<EnemyMovement>();
     }
 
     void Start()
@@ -47,7 +47,8 @@ public class EPathfinder : MonoBehaviour
 
     void Update()
     {
-        BreadthFirstSearch(startTargetWaypoints.StartWaypoint, startTargetWaypoints.ReadyToPickTargetWaypoint);
+        if(!enemyMovement.IsGoing)
+            BreadthFirstSearch(startTargetWaypoints.StartWaypoint, startTargetWaypoints.ReadyToPickTargetWaypoint);
     }
 
     private void BreadthFirstSearch(EWaypointData startWaypoint, bool readyToPickTargetWaypoint)
@@ -124,9 +125,19 @@ public class EPathfinder : MonoBehaviour
             path.Reverse();
 
             List<EWaypointData> tempPath = new List<EWaypointData>(path);
-            AllPaths.Add(tempPath);
 
-            startTargetWaypoints.ReadyToPickTargetWaypoint = true;
+            if (!startTargetWaypoints.ReadyToPickEndWaypoint)
+            {
+                AllPaths.Add(tempPath);
+                startTargetWaypoints.ReadyToPickTargetWaypoint = true;
+            }
+            else
+            {
+                enemyMovement.PathToFollow = tempPath;
+
+                startTargetWaypoints.ReadyToPickEndWaypoint = false;
+                found = true;
+            }
 
             foreach (EWaypointData waypoint in path)
             {
