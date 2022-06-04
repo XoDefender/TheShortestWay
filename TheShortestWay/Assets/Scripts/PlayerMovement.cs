@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     private List<WaypointData> pathToFollow;
     private Animator animator;
 
-    private float rotationSpeed;
     private bool isGoing = false;
 
     private void Awake()

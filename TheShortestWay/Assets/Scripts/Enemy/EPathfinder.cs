@@ -22,6 +22,7 @@ public class EPathfinder : MonoBehaviour
     private Queue<EWaypointData> exploringWaypoints = new Queue<EWaypointData>();
     private List<EWaypointData> exploredWaypoints = new List<EWaypointData>();
     private List<EWaypointData> path = new List<EWaypointData>();
+    private List<List<EWaypointData>> allPaths = new List<List<EWaypointData>>();
 
     private bool readyToFindPath = false;
     private bool isStartWaypointInQueue = false;
@@ -123,7 +124,7 @@ public class EPathfinder : MonoBehaviour
             path.Reverse();
 
             List<EWaypointData> tempPath = new List<EWaypointData>(path);
-            coinCollector.AllPaths.Add(tempPath);
+            AllPaths.Add(tempPath);
 
             startTargetWaypoints.ReadyToPickTargetWaypoint = true;
 
@@ -145,4 +146,5 @@ public class EPathfinder : MonoBehaviour
     }
 
     public bool Found { set{ found = value; } }
+    public List<List<EWaypointData>> AllPaths { get { return allPaths; } set { allPaths = value; } }
 }

@@ -65,4 +65,5 @@ public class EStartTargetWaypoints : MonoBehaviour
     public EWaypointData TargetWaypoint { get { return targetWaypoint; } }
 
     public bool ReadyToPickTargetWaypoint { get { return readyToPickTargetWaypoint; } set { readyToPickTargetWaypoint = value; } }
+    public int TargetWaypointNumber { set { targetWaypointNumber = value; } }
 }
