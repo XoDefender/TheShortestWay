@@ -98,33 +98,7 @@ public class Pathfinder : MonoBehaviour
             else
                 readyToFindPath = true;
 
-            if (readyToFindPath)
-            {
-                if(toFrom.ContainsKey(currentlyGoingFrom.GetGridPosition()))
-                {
-                    while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.StartWaypoint)
-                    {
-                        path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
-                        currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
-                    }
-                }
-                
-                if (!path.Contains(startEndWaypoints.StartWaypoint))
-                    path.Add(startEndWaypoints.StartWaypoint);
-
-                path.Reverse();
-
-                foreach (WaypointData waypoint in path)
-                {
-                    waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
-                }
-
-                List<WaypointData> tempPath = new List<WaypointData>(path);
-                playerMovement.PathToFollow = tempPath;
-
-                isObserved = true;
-                startEndWaypoints.readyToPickEndWaypoint = true;
-            }
+            FindPath();
         }
         else
         {
@@ -142,6 +116,37 @@ public class Pathfinder : MonoBehaviour
             {
                 DataReset();
             }
+        }
+    }
+
+    private void FindPath()
+    {
+        if (readyToFindPath)
+        {
+            if (toFrom.ContainsKey(currentlyGoingFrom.GetGridPosition()))
+            {
+                while (toFrom[currentlyGoingFrom.GetGridPosition()] != startEndWaypoints.StartWaypoint)
+                {
+                    path.Add(toFrom[currentlyGoingFrom.GetGridPosition()]);
+                    currentlyGoingFrom = toFrom[currentlyGoingFrom.GetGridPosition()];
+                }
+            }
+
+            if (!path.Contains(startEndWaypoints.StartWaypoint))
+                path.Add(startEndWaypoints.StartWaypoint);
+
+            path.Reverse();
+
+            foreach (WaypointData waypoint in path)
+            {
+                waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
+            }
+
+            List<WaypointData> tempPath = new List<WaypointData>(path);
+            playerMovement.PathToFollow = tempPath;
+
+            isObserved = true;
+            startEndWaypoints.readyToPickEndWaypoint = true;
         }
     }
 

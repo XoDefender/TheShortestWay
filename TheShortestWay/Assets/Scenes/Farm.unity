@@ -1592,17 +1592,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ad67d3da08735041aeba2a6e58faedd, type: 3}
---- !u!114 &129871770 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -3063830998026526277, guid: 9ad67d3da08735041aeba2a6e58faedd, type: 3}
-  m_PrefabInstance: {fileID: 129871769}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54f6d195d6ef44445ad7b4319e1dd5b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &129871771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7626088121274255536, guid: 9ad67d3da08735041aeba2a6e58faedd, type: 3}
@@ -9888,8 +9877,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1331964311}
   - component: {fileID: 1331964310}
-  - component: {fileID: 1331964309}
   - component: {fileID: 1331964308}
+  - component: {fileID: 1331964312}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -9910,23 +9899,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trapPrefab: {fileID: 115016, guid: afd19ab1d4bb70b499bb2f62171a522d, type: 3}
---- !u!114 &1331964309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331964307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 188de0678eb878a419075f8416870c54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypointLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  endWaypoint: {fileID: 129871770}
-  readyToPickEndWaypoint: 1
 --- !u!114 &1331964310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10033,6 +10005,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331964312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331964307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe9d1699642b9b4592021f4cee6745b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypointLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  endWaypoint: {fileID: 1614317868}
+  readyToPickEndWaypoint: 1
 --- !u!4 &1357846644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6662174415517613310, guid: 81dad7d5552c9a341b390c79338fe0a4, type: 3}
@@ -11825,6 +11814,17 @@ RectTransform:
   m_AnchoredPosition: {x: -100, y: -24}
   m_SizeDelta: {x: 168.1681, y: 28.7962}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1614317868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7833328923135773984, guid: 9ad67d3da08735041aeba2a6e58faedd, type: 3}
+  m_PrefabInstance: {fileID: 1101437642}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f6d195d6ef44445ad7b4319e1dd5b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1618498513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8554979865546078707, guid: aec8969d0290c6d4cbc587ef85a01ce4, type: 3}
