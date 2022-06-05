@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pathToFollow != null && !isGoing)
+        if (pathToFollow != null && !isGoing && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -51,14 +51,12 @@ public class EnemyMovement : MonoBehaviour
         }
 
         startTargetWaypoints.StartWaypoint = null;
-
         startTargetWaypoints.ReadyToPickTargetWaypoint = true;
         startTargetWaypoints.TargetWaypointNumber = 0;
 
         pathfinder.AllPaths.Clear();
-        pathToFollow = null;
-
         pathfinder.DataReset();
+        pathToFollow = null;
 
         isGoing = false;
     }
