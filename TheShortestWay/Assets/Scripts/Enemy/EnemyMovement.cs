@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    private List<EWaypointData> pathToFollow;
-    private EPathfinder pathfinder;
     private EStartTargetWaypoints startTargetWaypoints;
+    private EPathfinder pathfinder;
+    private List<EWaypointData> pathToFollow = new List<EWaypointData>();
 
     private bool isGoing = false;
 
@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pathToFollow != null && !isGoing && Input.GetKeyDown(KeyCode.Space))
+        if (pathToFollow.Count != 0 && !isGoing && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -50,13 +50,21 @@ public class EnemyMovement : MonoBehaviour
             yield return null;
         }
 
+        DataReset();
+    }
+
+    private void DataReset()
+    {
         startTargetWaypoints.StartWaypoint = null;
+
         startTargetWaypoints.ReadyToPickTargetWaypoint = true;
+
         startTargetWaypoints.TargetWaypointNumber = 0;
 
         pathfinder.AllPaths.Clear();
+        pathToFollow.Clear();
+
         pathfinder.DataReset();
-        pathToFollow = null;
 
         isGoing = false;
     }

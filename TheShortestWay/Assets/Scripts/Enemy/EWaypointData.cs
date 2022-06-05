@@ -18,7 +18,8 @@ public class EWaypointData : MonoBehaviour
 
     private void Start()
     {
-        if (!Mathf.Approximately(transform.position.x, enemy.transform.position.x) || !Mathf.Approximately(transform.position.z, enemy.transform.position.z))
+        if (!Mathf.Approximately(transform.position.x, enemy.transform.position.x)
+            || !Mathf.Approximately(transform.position.z, enemy.transform.position.z))
             textMesh.text = SetCoins().ToString();
     }
 
@@ -29,14 +30,6 @@ public class EWaypointData : MonoBehaviour
         return new Vector2Int(
                 Mathf.RoundToInt(transform.position.x / gridSize),
                 Mathf.RoundToInt(transform.position.z / gridSize)
-            );
-    }
-
-    public Vector2Int GetPosition()
-    {
-        return new Vector2Int(
-                Mathf.RoundToInt(transform.position.x),
-                Mathf.RoundToInt(transform.position.z)
             );
     }
 

@@ -9,6 +9,7 @@ public class ECoinCollector : MonoBehaviour
     private EnemyMovement enemyMovement;
     private EStartTargetWaypoints startTargetWaypoints;
 
+    private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
     private int requiredCoins = 500;
@@ -24,8 +25,6 @@ public class ECoinCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(pickedCoins);
-
         if (pickedCoins <= requiredCoins)
             SelectTheGreatestPath();
         else
@@ -40,40 +39,44 @@ public class ECoinCollector : MonoBehaviour
         {
             foreach (List<EWaypointData> path in pathfinder.AllPaths)
             {
-                int coins = 0;
+                CountCoins(path);
 
-                foreach (EWaypointData waypoint in path)
-                {
-                    if (waypoint.TextMesh.text != "")
-                        coins += int.Parse(waypoint.TextMesh.text);
-                }
-
-                if (coins > maxCoins)
-                    maxCoins = coins;
+                if (pathCoins > maxCoins)
+                    maxCoins = pathCoins;
             }
 
             foreach (List<EWaypointData> path in pathfinder.AllPaths)
             {
-                int coins = 0;
+                CountCoins(path);
 
-                foreach (EWaypointData waypoint in path)
-                {
-                    if (waypoint.TextMesh.text != "")
-                        coins += int.Parse(waypoint.TextMesh.text);
-                }
-
-                if (coins == maxCoins && maxCoins != 0)
+                if (pathCoins == maxCoins && maxCoins != 0)
                 {
                     enemyMovement.PathToFollow = path;
                     maxCoins = 0;
 
-                    foreach (EWaypointData waypoint in path)
-                        waypoint.GetComponent<MeshRenderer>().material.color = Color.green;
+                    ColorPath(path);
 
                     break;
                 }
             }
         }
+    }
+
+    private void CountCoins(List<EWaypointData> path)
+    {
+        pathCoins = 0;
+
+        foreach (EWaypointData waypoint in path)
+        {
+            if (waypoint.TextMesh.text != "")
+                pathCoins += int.Parse(waypoint.TextMesh.text);
+        }
+    }
+
+    private void ColorPath(List<EWaypointData> path)
+    {
+        foreach (EWaypointData waypoint in path)
+            waypoint.GetComponent<MeshRenderer>().material.color = Color.green;
     }
 
     private void PickUpCoin(EWaypointData[] waypoints)

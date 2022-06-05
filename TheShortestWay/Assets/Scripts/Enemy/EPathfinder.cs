@@ -6,12 +6,12 @@ public class EPathfinder : MonoBehaviour
 {
     private EStartTargetWaypoints startTargetWaypoints;
     private EWaypointData currentlyGoingFrom;
-    private EWaypointData[] waypoints;
     private EnemyMovement enemyMovement;
 
     private Dictionary<Vector2Int, EWaypointData> roadWaypoints = new Dictionary<Vector2Int, EWaypointData>();
     private Dictionary<Vector2Int, EWaypointData> toFrom = new Dictionary<Vector2Int, EWaypointData>();
 
+    private EWaypointData[] waypoints;
     private Vector2Int[] directions = {
         Vector2Int.up,
         Vector2Int.down,
@@ -42,7 +42,6 @@ public class EPathfinder : MonoBehaviour
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
                 roadWaypoints.Add(waypoint.GetGridPosition(), waypoint);
         }
-
     }
 
     void Update()
@@ -156,6 +155,6 @@ public class EPathfinder : MonoBehaviour
         readyToFindPath = false;
     }
 
-    public bool Found { set{ found = value; } }
+    public bool Found { set { found = value; } }
     public List<List<EWaypointData>> AllPaths { get { return allPaths; } set { allPaths = value; } }
 }
