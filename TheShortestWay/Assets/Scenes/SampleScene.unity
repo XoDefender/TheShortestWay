@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 467942054}
   - component: {fileID: 467942058}
   - component: {fileID: 467942059}
+  - component: {fileID: 467942060}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -245,6 +246,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 432c4c4032ea99449a49dd5e2d0e9877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &467942060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467942053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c64baac710908d468fcd5a248d6e666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &705507993
@@ -457,6 +470,7 @@ GameObject:
   - component: {fileID: 1109323849}
   - component: {fileID: 1109323854}
   - component: {fileID: 1109323853}
+  - component: {fileID: 1109323855}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -583,6 +597,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a358075abee6a443a937faf41285d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1109323855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109323848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddecff885ed4d44396b5cda1da76fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trapPrefab: {fileID: 115016, guid: afd19ab1d4bb70b499bb2f62171a522d, type: 3}
 --- !u!102 &389039273698606216
 TextMesh:
   serializedVersion: 3

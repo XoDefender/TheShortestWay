@@ -86,6 +86,7 @@ public class EStartTargetWaypoints : MonoBehaviour
     }
 
     public EWaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = value; } }
+    public EWaypointData EndWaypoint { get { return endWaypoint; } }
     public EWaypointData TargetWaypoint { get { return targetWaypoint; } }
 
     public bool ReadyToPickTargetWaypoint { get { return readyToPickTargetWaypoint; } set { readyToPickTargetWaypoint = value; } }

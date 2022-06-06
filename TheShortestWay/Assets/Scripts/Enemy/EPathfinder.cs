@@ -7,6 +7,7 @@ public class EPathfinder : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EWaypointData currentlyGoingFrom;
     private EnemyMovement enemyMovement;
+    private EPathAnalyzer pathAnalyzer;
 
     private Dictionary<Vector2Int, EWaypointData> roadWaypoints = new Dictionary<Vector2Int, EWaypointData>();
     private Dictionary<Vector2Int, EWaypointData> toFrom = new Dictionary<Vector2Int, EWaypointData>();
@@ -33,6 +34,7 @@ public class EPathfinder : MonoBehaviour
         startTargetWaypoints = GetComponent<EStartTargetWaypoints>();
         waypoints = FindObjectsOfType<EWaypointData>();
         enemyMovement = FindObjectOfType<EnemyMovement>();
+        pathAnalyzer = FindObjectOfType<EPathAnalyzer>();
     }
 
     void Start()
@@ -132,7 +134,8 @@ public class EPathfinder : MonoBehaviour
             }
             else
             {
-                enemyMovement.PathToFollow = tempPath;
+                if(!pathAnalyzer.HasTraps(tempPath))
+                    enemyMovement.PathToFollow = tempPath;
 
                 startTargetWaypoints.ReadyToPickEndWaypoint = false;
                 found = true;

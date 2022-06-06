@@ -8,11 +8,12 @@ public class ECoinCollector : MonoBehaviour
     private EPathfinder pathfinder;
     private EnemyMovement enemyMovement;
     private EStartTargetWaypoints startTargetWaypoints;
+    private EPathAnalyzer pathAnalyzer;
 
     private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
-    private int requiredCoins = 500;
+    private int requiredCoins = 200;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class ECoinCollector : MonoBehaviour
         enemyMovement = FindObjectOfType<EnemyMovement>();
         pathfinder = FindObjectOfType<EPathfinder>();
         startTargetWaypoints = FindObjectOfType<EStartTargetWaypoints>();
+        pathAnalyzer = FindObjectOfType<EPathAnalyzer>();
     }
 
     // Update is called once per frame
@@ -39,24 +41,30 @@ public class ECoinCollector : MonoBehaviour
         {
             foreach (List<EWaypointData> path in pathfinder.AllPaths)
             {
-                CountCoins(path);
+                if (!pathAnalyzer.HasTraps(path))
+                {
+                    CountCoins(path);
 
-                if (pathCoins > maxCoins)
-                    maxCoins = pathCoins;
+                    if (pathCoins > maxCoins)
+                        maxCoins = pathCoins;
+                }
             }
 
             foreach (List<EWaypointData> path in pathfinder.AllPaths)
             {
-                CountCoins(path);
-
-                if (pathCoins == maxCoins && maxCoins != 0)
+                if (!pathAnalyzer.HasTraps(path))
                 {
-                    enemyMovement.PathToFollow = path;
-                    maxCoins = 0;
+                    CountCoins(path);
 
-                    ColorPath(path);
+                    if (pathCoins == maxCoins && maxCoins != 0)
+                    {
+                        enemyMovement.PathToFollow = path;
+                        maxCoins = 0;
 
-                    break;
+                        ColorPath(path);
+
+                        break;
+                    }
                 }
             }
         }
