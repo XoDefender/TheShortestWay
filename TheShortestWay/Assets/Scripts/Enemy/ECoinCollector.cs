@@ -10,10 +10,12 @@ public class ECoinCollector : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EPathAnalyzer pathAnalyzer;
 
+    private List<List<EWaypointData>> exploredPaths = new List<List<EWaypointData>>();
+
     private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
-    private int requiredCoins = 200;
+    private int requiredCoins = 500;
 
     private void Awake()
     {
@@ -56,7 +58,7 @@ public class ECoinCollector : MonoBehaviour
                 {
                     CountCoins(path);
 
-                    if (pathCoins == maxCoins && maxCoins != 0)
+                    if (pathCoins == maxCoins && maxCoins != 0 && pathCoins != 0)
                     {
                         enemyMovement.PathToFollow = path;
                         maxCoins = 0;
@@ -64,6 +66,31 @@ public class ECoinCollector : MonoBehaviour
                         ColorPath(path);
 
                         break;
+                    }
+                }
+
+                if (pathCoins == 0 && pathfinder.AllPaths.IndexOf(path) == pathfinder.AllPaths.Count - 1)
+                {
+                    foreach (List<EWaypointData> pathToFollow in pathfinder.AllPaths)
+                    {
+                        if (pathToFollow.Count == 1 || exploredPaths.Contains(pathToFollow))
+                        {
+                            Debug.Log("the path is explored");
+
+                            foreach (EWaypointData waypoint in pathToFollow)
+                                Debug.Log(waypoint.name);
+
+                            continue;
+                        }
+
+                        if (!pathAnalyzer.HasTraps(pathToFollow))
+                        {
+                            Debug.Log("the path is not explored");
+
+                            exploredPaths.Add(pathToFollow);
+                            enemyMovement.PathToFollow = pathToFollow;
+                            break;
+                        }
                     }
                 }
             }
