@@ -126,20 +126,9 @@ public class EPathfinder : MonoBehaviour
             path.Reverse();
 
             List<EWaypointData> tempPath = new List<EWaypointData>(path);
+            AllPaths.Add(tempPath);
 
-            if (!startTargetWaypoints.ReadyToPickEndWaypoint)
-            {
-                AllPaths.Add(tempPath);
-                startTargetWaypoints.ReadyToPickTargetWaypoint = true;
-            }
-            else
-            {
-                if(!pathAnalyzer.HasTraps(tempPath))
-                    enemyMovement.PathToFollow = tempPath;
-
-                startTargetWaypoints.ReadyToPickEndWaypoint = false;
-                found = true;
-            }
+            startTargetWaypoints.ReadyToPickTargetWaypoint = true;
 
             foreach (EWaypointData waypoint in path)
             {

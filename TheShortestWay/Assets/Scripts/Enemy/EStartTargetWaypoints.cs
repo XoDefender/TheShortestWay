@@ -16,7 +16,6 @@ public class EStartTargetWaypoints : MonoBehaviour
     private const string enemyName = "Enemy";
 
     private bool readyToPickTargetWaypoint = true;
-    private bool readyToPickEndWaypoint = false;
     private int targetWaypointNumber = 0;
 
     private void Awake()
@@ -58,7 +57,7 @@ public class EStartTargetWaypoints : MonoBehaviour
 
     private void PickTargetWaypoint()
     {
-        if (readyToPickTargetWaypoint && targetWaypointNumber < waypoints.Length && !readyToPickEndWaypoint)
+        if (readyToPickTargetWaypoint && targetWaypointNumber < waypoints.Length)
         {
             targetWaypoint = waypoints[targetWaypointNumber];
 
@@ -68,13 +67,6 @@ public class EStartTargetWaypoints : MonoBehaviour
 
             readyToPickTargetWaypoint = false;
 
-            pathfinder.Found = false;
-        }
-
-        if (readyToPickEndWaypoint)
-        {
-            targetWaypoint = endWaypoint;
-            readyToPickTargetWaypoint = false;
             pathfinder.Found = false;
         }
     }
@@ -90,7 +82,6 @@ public class EStartTargetWaypoints : MonoBehaviour
     public EWaypointData TargetWaypoint { get { return targetWaypoint; } }
 
     public bool ReadyToPickTargetWaypoint { get { return readyToPickTargetWaypoint; } set { readyToPickTargetWaypoint = value; } }
-    public bool ReadyToPickEndWaypoint { get { return readyToPickEndWaypoint; } set { readyToPickEndWaypoint = value; } }
 
     public int TargetWaypointNumber { set { targetWaypointNumber = value; } }
 }

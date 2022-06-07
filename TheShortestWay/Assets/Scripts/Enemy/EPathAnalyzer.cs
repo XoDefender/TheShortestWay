@@ -35,6 +35,23 @@ public class EPathAnalyzer : MonoBehaviour
         allPathsAreObserved = true;
     }
 
+    public void FindPathToTarget(List<List<EWaypointData>> allPaths, EWaypointData targetWaypoint, EnemyMovement enemyMovement)
+    {
+        foreach(List<EWaypointData> path in allPaths)
+        {
+            if (path[path.Count - 1] == targetWaypoint && !HasTraps(path))
+                enemyMovement.PathToFollow = path;
+            else if(!allPathsAreObserved)
+                FindSafePath(allPaths, enemyMovement, ColorPath);
+        }
+    }
+
+    private void ColorPath(List<EWaypointData> path, Color color)
+    {
+        foreach (EWaypointData waypoint in path)
+            waypoint.GetComponent<MeshRenderer>().material.color = color;
+    }
+
     public bool HasTraps(List<EWaypointData> path)
     {
         foreach (EWaypointData waypoint in path)

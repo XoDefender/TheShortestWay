@@ -13,7 +13,7 @@ public class ECoinCollector : MonoBehaviour
     private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
-    private int requiredCoins = 300;
+    private int requiredCoins = 200;
 
     private void Awake()
     {
@@ -27,13 +27,15 @@ public class ECoinCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(pickedCoins);
 
         if (pickedCoins <= requiredCoins)
             SelectTheGreatestPath();
-        else
-            startTargetWaypoints.ReadyToPickEndWaypoint = true;
-        
+        else if(pathfinder.AllPaths.Count == waypoints.Length)
+        {
+            pathAnalyzer.FindPathToTarget(pathfinder.AllPaths, startTargetWaypoints.EndWaypoint, enemyMovement);
+        }
+            
         PickUpCoin(waypoints);
     }
 
