@@ -70,7 +70,7 @@ public class ECoinCollector : MonoBehaviour
                         break;
                     }
                     else if(maxCoins == 0 && !pathAnalyzer.allPathsAreObserved)
-                        pathAnalyzer.FindSafePath(pathfinder.AllPaths, enemyMovement, pathAnalyzer.ColorPath);
+                        pathAnalyzer.FindSafePath(pathfinder.AllPaths, enemyMovement);
                 }
             }
         }

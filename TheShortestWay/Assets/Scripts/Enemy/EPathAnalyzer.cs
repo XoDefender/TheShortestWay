@@ -11,7 +11,7 @@ public class EPathAnalyzer : MonoBehaviour
 
     public bool allPathsAreObserved = false;
 
-    public void FindSafePath(List<List<EWaypointData>> allPaths, EnemyMovement enemyMovement, Action<List<EWaypointData>, Color> ColorPath)
+    public void FindSafePath(List<List<EWaypointData>> allPaths, EnemyMovement enemyMovement)
     {
         foreach (List<EWaypointData> pathToFollow in allPaths)
         {
@@ -42,7 +42,7 @@ public class EPathAnalyzer : MonoBehaviour
             if (path[path.Count - 1] == targetWaypoint && !HasTraps(path))
                 enemyMovement.PathToFollow = path;
             else if(!allPathsAreObserved)
-                FindSafePath(allPaths, enemyMovement, ColorPath);
+                FindSafePath(allPaths, enemyMovement);
         }
     }
 
