@@ -67,7 +67,7 @@ public class ETrapsController : MonoBehaviour
 
     private void CreateTraps()
     {
-        int trapsAmount = 20;
+        int trapsAmount = 50;
 
         waypoints = FindObjectsOfType<EWaypointData>();
 

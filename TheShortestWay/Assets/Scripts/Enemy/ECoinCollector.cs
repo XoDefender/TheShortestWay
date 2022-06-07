@@ -10,12 +10,10 @@ public class ECoinCollector : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EPathAnalyzer pathAnalyzer;
 
-    private List<List<EWaypointData>> exploredPaths = new List<List<EWaypointData>>();
-
     private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
-    private int requiredCoins = 500;
+    private int requiredCoins = 300;
 
     private void Awake()
     {
@@ -29,11 +27,13 @@ public class ECoinCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (pickedCoins <= requiredCoins)
             SelectTheGreatestPath();
         else
             startTargetWaypoints.ReadyToPickEndWaypoint = true;
-
+        
         PickUpCoin(waypoints);
     }
 
@@ -63,35 +63,12 @@ public class ECoinCollector : MonoBehaviour
                         enemyMovement.PathToFollow = path;
                         maxCoins = 0;
 
-                        ColorPath(path);
+                        ColorPath(path, Color.green);
 
                         break;
                     }
-                }
-
-                if (pathCoins == 0 && pathfinder.AllPaths.IndexOf(path) == pathfinder.AllPaths.Count - 1)
-                {
-                    foreach (List<EWaypointData> pathToFollow in pathfinder.AllPaths)
-                    {
-                        if (pathToFollow.Count == 1 || exploredPaths.Contains(pathToFollow))
-                        {
-                            Debug.Log("the path is explored");
-
-                            foreach (EWaypointData waypoint in pathToFollow)
-                                Debug.Log(waypoint.name);
-
-                            continue;
-                        }
-
-                        if (!pathAnalyzer.HasTraps(pathToFollow))
-                        {
-                            Debug.Log("the path is not explored");
-
-                            exploredPaths.Add(pathToFollow);
-                            enemyMovement.PathToFollow = pathToFollow;
-                            break;
-                        }
-                    }
+                    else if(maxCoins == 0 && !pathAnalyzer.allPathsAreObserved)
+                        pathAnalyzer.FindSafePath(pathfinder.AllPaths, enemyMovement, ColorPath);
                 }
             }
         }
@@ -108,10 +85,10 @@ public class ECoinCollector : MonoBehaviour
         }
     }
 
-    private void ColorPath(List<EWaypointData> path)
+    private void ColorPath(List<EWaypointData> path, Color color)
     {
         foreach (EWaypointData waypoint in path)
-            waypoint.GetComponent<MeshRenderer>().material.color = Color.green;
+            waypoint.GetComponent<MeshRenderer>().material.color = color;
     }
 
     private void PickUpCoin(EWaypointData[] waypoints)

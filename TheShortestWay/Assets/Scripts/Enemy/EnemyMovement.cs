@@ -6,6 +6,8 @@ public class EnemyMovement : MonoBehaviour
 {
     private EStartTargetWaypoints startTargetWaypoints;
     private EPathfinder pathfinder;
+    private EPathAnalyzer pathAnalyzer;
+
     private List<EWaypointData> pathToFollow = new List<EWaypointData>();
 
     private bool isGoing = false;
@@ -14,6 +16,7 @@ public class EnemyMovement : MonoBehaviour
     {
         pathfinder = FindObjectOfType<EPathfinder>();
         startTargetWaypoints = FindObjectOfType<EStartTargetWaypoints>();
+        pathAnalyzer = FindObjectOfType<EPathAnalyzer>();
     }
 
     // Update is called once per frame
@@ -56,15 +59,15 @@ public class EnemyMovement : MonoBehaviour
     private void DataReset()
     {
         startTargetWaypoints.StartWaypoint = null;
-
         startTargetWaypoints.ReadyToPickTargetWaypoint = true;
-
         startTargetWaypoints.TargetWaypointNumber = 0;
 
         pathfinder.AllPaths.Clear();
         pathToFollow.Clear();
 
         pathfinder.DataReset();
+
+        pathAnalyzer.allPathsAreObserved = false;
 
         isGoing = false;
     }
