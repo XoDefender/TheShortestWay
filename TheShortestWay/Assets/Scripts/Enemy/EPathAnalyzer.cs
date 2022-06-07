@@ -46,7 +46,7 @@ public class EPathAnalyzer : MonoBehaviour
         }
     }
 
-    private void ColorPath(List<EWaypointData> path, Color color)
+    public void ColorPath(List<EWaypointData> path, Color color)
     {
         foreach (EWaypointData waypoint in path)
             waypoint.GetComponent<MeshRenderer>().material.color = color;

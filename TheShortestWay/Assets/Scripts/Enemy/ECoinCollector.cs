@@ -65,12 +65,12 @@ public class ECoinCollector : MonoBehaviour
                         enemyMovement.PathToFollow = path;
                         maxCoins = 0;
 
-                        ColorPath(path, Color.green);
+                        pathAnalyzer.ColorPath(path, Color.green);
 
                         break;
                     }
                     else if(maxCoins == 0 && !pathAnalyzer.allPathsAreObserved)
-                        pathAnalyzer.FindSafePath(pathfinder.AllPaths, enemyMovement, ColorPath);
+                        pathAnalyzer.FindSafePath(pathfinder.AllPaths, enemyMovement, pathAnalyzer.ColorPath);
                 }
             }
         }
@@ -85,12 +85,6 @@ public class ECoinCollector : MonoBehaviour
             if (waypoint.TextMesh.text != "")
                 pathCoins += int.Parse(waypoint.TextMesh.text);
         }
-    }
-
-    private void ColorPath(List<EWaypointData> path, Color color)
-    {
-        foreach (EWaypointData waypoint in path)
-            waypoint.GetComponent<MeshRenderer>().material.color = color;
     }
 
     private void PickUpCoin(EWaypointData[] waypoints)
