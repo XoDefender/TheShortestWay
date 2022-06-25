@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
 
     private bool isGoing = false;
+    private bool isEnemyReadyToGo = false;
 
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startEndWaypoints.HasPickedTargetWaypoint && !isGoing)
+        if (startEndWaypoints.HasPickedTargetWaypoint && !isGoing && !isEnemyReadyToGo)
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -67,9 +68,11 @@ public class PlayerMovement : MonoBehaviour
         startEndWaypoints.StartWaypoint = null;
         startEndWaypoints.HasPickedTargetWaypoint = false;
         isGoing = false;
+        isEnemyReadyToGo = true;
 
         pathfinder.DataReset();
     }
 
     public List<WaypointData> PathToFollow { set { pathToFollow = value; } }
+    public bool IsEnemyReadyToGo { get { return isEnemyReadyToGo; } set { isEnemyReadyToGo = value; } }
 }

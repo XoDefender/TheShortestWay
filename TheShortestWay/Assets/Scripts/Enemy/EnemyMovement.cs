@@ -7,8 +7,9 @@ public class EnemyMovement : MonoBehaviour
     private EStartTargetWaypoints startTargetWaypoints;
     private EPathfinder pathfinder;
     private EPathAnalyzer pathAnalyzer;
+    private PlayerMovement playerMovement;
 
-    private List<EWaypointData> pathToFollow = new List<EWaypointData>();
+    private List<WaypointData> pathToFollow = new List<WaypointData>();
 
     private bool isGoing = false;
 
@@ -17,12 +18,13 @@ public class EnemyMovement : MonoBehaviour
         pathfinder = FindObjectOfType<EPathfinder>();
         startTargetWaypoints = FindObjectOfType<EStartTargetWaypoints>();
         pathAnalyzer = FindObjectOfType<EPathAnalyzer>();
+        playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (pathToFollow.Count != 0 && !isGoing && Input.GetKeyDown(KeyCode.Space))
+        if (pathToFollow.Count != 0 && !isGoing && playerMovement.IsEnemyReadyToGo)
         {
             StartCoroutine(StartMovement());
             isGoing = true;
@@ -31,7 +33,7 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator StartMovement()
     {
-        foreach (EWaypointData waypoint in pathToFollow)
+        foreach (WaypointData waypoint in pathToFollow)
         {
             Vector3 targetVector = new Vector3(waypoint.transform.position.x, transform.position.y, waypoint.transform.position.z) - transform.position;
             Vector3 startPosition = transform.position;
@@ -70,8 +72,9 @@ public class EnemyMovement : MonoBehaviour
         pathAnalyzer.allPathsAreObserved = false;
 
         isGoing = false;
+        playerMovement.IsEnemyReadyToGo = false;
     }
 
-    public List<EWaypointData> PathToFollow { set { pathToFollow = value; } }
+    public List<WaypointData> PathToFollow { set { pathToFollow = value; } }
     public bool IsGoing { get { return isGoing; } }
 }

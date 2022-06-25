@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class EPathAnalyzer : MonoBehaviour
 {
-    public List<EWaypointData> exploredTargetWaypoints = new List<EWaypointData>();
+    private List<WaypointData> exploredTargetWaypoints = new List<WaypointData>();
 
     private const string trapName = "Pf_Trap_Needle(Clone)";
 
     public bool allPathsAreObserved = false;
 
-    public void FindSafePath(List<List<EWaypointData>> allPaths, EnemyMovement enemyMovement)
+    public void FindSafePath(List<List<WaypointData>> allPaths, EnemyMovement enemyMovement)
     {
-        foreach (List<EWaypointData> pathToFollow in allPaths)
+        foreach (List<WaypointData> pathToFollow in allPaths)
         {
             if (!HasTraps(pathToFollow))
             {
@@ -35,9 +35,9 @@ public class EPathAnalyzer : MonoBehaviour
         allPathsAreObserved = true;
     }
 
-    public void FindPathToTarget(List<List<EWaypointData>> allPaths, EWaypointData targetWaypoint, EnemyMovement enemyMovement)
+    public void FindPathToTarget(List<List<WaypointData>> allPaths, WaypointData targetWaypoint, EnemyMovement enemyMovement)
     {
-        foreach(List<EWaypointData> path in allPaths)
+        foreach(List<WaypointData> path in allPaths)
         {
             if (path[path.Count - 1] == targetWaypoint && !HasTraps(path))
                 enemyMovement.PathToFollow = path;
@@ -46,15 +46,15 @@ public class EPathAnalyzer : MonoBehaviour
         }
     }
 
-    public void ColorPath(List<EWaypointData> path, Color color)
+    public void ColorPath(List<WaypointData> path, Color color)
     {
-        foreach (EWaypointData waypoint in path)
+        foreach (WaypointData waypoint in path)
             waypoint.GetComponent<MeshRenderer>().material.color = color;
     }
 
-    public bool HasTraps(List<EWaypointData> path)
+    public bool HasTraps(List<WaypointData> path)
     {
-        foreach (EWaypointData waypoint in path)
+        foreach (WaypointData waypoint in path)
         {
             if (waypoint.transform.Find(trapName))
             {

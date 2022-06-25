@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EStartTargetWaypoints : MonoBehaviour
 {
-    [SerializeField] private EWaypointData endWaypoint;
+    [SerializeField] private WaypointData endWaypoint;
 
-    private EWaypointData[] waypoints;
-    private EWaypointData startWaypoint;
-    private EWaypointData targetWaypoint;
+    private WaypointData[] waypoints;
+    private WaypointData startWaypoint;
+    private WaypointData targetWaypoint;
     private GameObject enemy;
     private EPathfinder pathfinder;
     private ECoinCollector coinCollector;
@@ -21,7 +21,7 @@ public class EStartTargetWaypoints : MonoBehaviour
     private void Awake()
     {
         pathfinder = FindObjectOfType<EPathfinder>();
-        waypoints = FindObjectsOfType<EWaypointData>();
+        waypoints = FindObjectsOfType<WaypointData>();
         enemy = GameObject.Find(enemyName);
         coinCollector = FindObjectOfType<ECoinCollector>();
     }
@@ -39,11 +39,11 @@ public class EStartTargetWaypoints : MonoBehaviour
             Destroy(pathfinder);
     }
 
-    private void PickStartWaypoint(EWaypointData[] waypoints)
+    private void PickStartWaypoint(WaypointData[] waypoints)
     {
         if (startWaypoint == null)
         {
-            foreach (EWaypointData waypoint in waypoints)
+            foreach (WaypointData waypoint in waypoints)
             {
                 if (Mathf.Approximately(waypoint.transform.position.x, enemy.transform.position.x) && Mathf.Approximately(waypoint.transform.position.z, enemy.transform.position.z))
                 {
@@ -77,9 +77,9 @@ public class EStartTargetWaypoints : MonoBehaviour
         endWaypoint.GetComponent<MeshRenderer>().material.color = Color.black;
     }
 
-    public EWaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = value; } }
-    public EWaypointData EndWaypoint { get { return endWaypoint; } }
-    public EWaypointData TargetWaypoint { get { return targetWaypoint; } }
+    public WaypointData StartWaypoint { get { return startWaypoint; } set { startWaypoint = value; } }
+    public WaypointData EndWaypoint { get { return endWaypoint; } }
+    public WaypointData TargetWaypoint { get { return targetWaypoint; } }
 
     public bool ReadyToPickTargetWaypoint { get { return readyToPickTargetWaypoint; } set { readyToPickTargetWaypoint = value; } }
 

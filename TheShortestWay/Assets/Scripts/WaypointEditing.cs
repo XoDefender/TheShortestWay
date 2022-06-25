@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-[RequireComponent (typeof(WaypointData))]
 public class WaypointEditing : MonoBehaviour
 {
     private WaypointData waypointData;

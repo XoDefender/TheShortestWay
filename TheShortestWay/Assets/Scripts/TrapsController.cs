@@ -13,8 +13,11 @@ public class TrapsController : MonoBehaviour
     private GameObject player;
     private StartEndWaypoints startEndWaypoints;
     private ChestController chestController;
+    private GameObject enemy;
+    private EnemyHealth enemyHealth;
 
     private const string playerName = "Player";
+    private const string enemyName = "Enemy";
     private const string trapName = "Pf_Trap_Needle(Clone)";
 
     private int HitPoints = 50;
@@ -25,6 +28,8 @@ public class TrapsController : MonoBehaviour
         playerHealth = player.GetComponent<PlayerHealth>();
         startEndWaypoints = GetComponent<StartEndWaypoints>();
         chestController = FindObjectOfType<ChestController>();
+        enemy = GameObject.Find(enemyName);
+        enemyHealth = enemy.GetComponent<EnemyHealth>();    
     }
 
     // Start is called before the first frame update
@@ -39,13 +44,18 @@ public class TrapsController : MonoBehaviour
     {
         if (player)
             OnTrapTrigger();
+
+        if (enemy)
+            OnTrapTrigger();
     }
 
     private void OnTrapTrigger()
     {
         foreach (WaypointData trap in traps)
         {
-            if (Mathf.Approximately(trap.transform.position.x, player.transform.position.x) && Mathf.Approximately(trap.transform.position.z, player.transform.position.z))
+            if ((Mathf.Approximately(trap.transform.position.x, player.transform.position.x) && Mathf.Approximately(trap.transform.position.z, player.transform.position.z))
+                ||
+                (Mathf.Approximately(trap.transform.position.x, enemy.transform.position.x) && Mathf.Approximately(trap.transform.position.z, enemy.transform.position.z)))
             {
                 if(!triggeredTraps.Contains(trap))
                 {
@@ -53,6 +63,7 @@ public class TrapsController : MonoBehaviour
                     trap.transform.Find(trapName).GetComponent<Animation>().Play();
 
                     playerHealth.HealthPoints -= HitPoints;
+                    enemyHealth.HealthPoints -= HitPoints;
                 }
             }
         }
@@ -81,7 +92,9 @@ public class TrapsController : MonoBehaviour
                 && !Mathf.Approximately(randomTrap.transform.position.z, player.transform.position.z) 
                 && randomTrap.transform.position != startEndWaypoints.EndWaypoint.transform.position 
                 && !Mathf.Approximately(randomTrap.transform.position.x, chestController.transform.position.x) 
-                && !Mathf.Approximately(randomTrap.transform.position.z, chestController.transform.position.z))
+                && !Mathf.Approximately(randomTrap.transform.position.z, chestController.transform.position.z)
+                && !Mathf.Approximately(randomTrap.transform.position.x, enemy.transform.position.x)
+                && !Mathf.Approximately(randomTrap.transform.position.z, enemy.transform.position.z))
                 traps.Add(randomTrap);
         }
     }

@@ -6,9 +6,13 @@ public class ChestController : MonoBehaviour
 {
     private Animator animator;
     private GameObject player;
+    private GameObject enemy;
+    private EnemyMovement enemyMovement;
     private ScoreManager scoreManager;
+    private ECoinCollector coinCollector;
 
     private const string playerName = "Player";
+    private const string enemyName = "Enemy";
 
     private int requiredAmountOfPoints = 150;
 
@@ -18,7 +22,10 @@ public class ChestController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player = GameObject.Find(playerName);
+        enemy = GameObject.Find(enemyName);
         scoreManager = FindObjectOfType<ScoreManager>();
+        coinCollector = FindObjectOfType<ECoinCollector>();
+        enemyMovement = FindObjectOfType<EnemyMovement>();
     }
 
     // Update is called once per frame
@@ -26,10 +33,11 @@ public class ChestController : MonoBehaviour
     {
         Vector2 chestPosition = new Vector2(transform.position.x, transform.position.z);
         Vector2 playerPosition = new Vector2(player.transform.position.x, player.transform.position.z);
+        Vector2 enemyPosition = new Vector2(enemy.transform.position.x, enemy.transform.position.z);
 
-        if (scoreManager.Score >= requiredAmountOfPoints)
+        if (scoreManager.Score >= requiredAmountOfPoints || coinCollector.PickedCoins >= requiredAmountOfPoints)
         {
-            if (chestPosition - playerPosition == new Vector2(0, 10))
+            if (chestPosition - playerPosition == new Vector2(0, 10) || (chestPosition - enemyPosition == new Vector2(0, 10) && !enemyMovement.IsGoing))
             {
                 animator.SetBool("Bounce", false);
                 animator.SetBool("ReadyToOpen", true);

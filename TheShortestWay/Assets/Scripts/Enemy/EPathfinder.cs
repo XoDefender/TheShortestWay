@@ -5,14 +5,13 @@ using UnityEngine;
 public class EPathfinder : MonoBehaviour
 {
     private EStartTargetWaypoints startTargetWaypoints;
-    private EWaypointData currentlyGoingFrom;
+    private WaypointData currentlyGoingFrom;
     private EnemyMovement enemyMovement;
-    private EPathAnalyzer pathAnalyzer;
 
-    private Dictionary<Vector2Int, EWaypointData> roadWaypoints = new Dictionary<Vector2Int, EWaypointData>();
-    private Dictionary<Vector2Int, EWaypointData> toFrom = new Dictionary<Vector2Int, EWaypointData>();
+    private Dictionary<Vector2Int, WaypointData> roadWaypoints = new Dictionary<Vector2Int, WaypointData>();
+    private Dictionary<Vector2Int, WaypointData> toFrom = new Dictionary<Vector2Int, WaypointData>();
 
-    private EWaypointData[] waypoints;
+    private WaypointData[] waypoints;
     private Vector2Int[] directions = {
         Vector2Int.up,
         Vector2Int.down,
@@ -20,10 +19,10 @@ public class EPathfinder : MonoBehaviour
         Vector2Int.right
     };
 
-    private Queue<EWaypointData> exploringWaypoints = new Queue<EWaypointData>();
-    private List<EWaypointData> exploredWaypoints = new List<EWaypointData>();
-    private List<EWaypointData> path = new List<EWaypointData>();
-    private List<List<EWaypointData>> allPaths = new List<List<EWaypointData>>();
+    private Queue<WaypointData> exploringWaypoints = new Queue<WaypointData>();
+    private List<WaypointData> exploredWaypoints = new List<WaypointData>();
+    private List<WaypointData> path = new List<WaypointData>();
+    private List<List<WaypointData>> allPaths = new List<List<WaypointData>>();
 
     private bool readyToFindPath = false;
     private bool isStartWaypointInQueue = false;
@@ -32,14 +31,13 @@ public class EPathfinder : MonoBehaviour
     private void Awake()
     {
         startTargetWaypoints = GetComponent<EStartTargetWaypoints>();
-        waypoints = FindObjectsOfType<EWaypointData>();
+        waypoints = FindObjectsOfType<WaypointData>();
         enemyMovement = FindObjectOfType<EnemyMovement>();
-        pathAnalyzer = FindObjectOfType<EPathAnalyzer>();
     }
 
     void Start()
     {
-        foreach (EWaypointData waypoint in waypoints)
+        foreach (WaypointData waypoint in waypoints)
         {
             if (!roadWaypoints.ContainsKey(waypoint.GetGridPosition()))
                 roadWaypoints.Add(waypoint.GetGridPosition(), waypoint);
@@ -52,7 +50,7 @@ public class EPathfinder : MonoBehaviour
             BreadthFirstSearch(startTargetWaypoints.StartWaypoint, startTargetWaypoints.ReadyToPickTargetWaypoint);
     }
 
-    private void BreadthFirstSearch(EWaypointData startWaypoint, bool readyToPickTargetWaypoint)
+    private void BreadthFirstSearch(WaypointData startWaypoint, bool readyToPickTargetWaypoint)
     {
         while (!found)
         {
@@ -125,12 +123,12 @@ public class EPathfinder : MonoBehaviour
 
             path.Reverse();
 
-            List<EWaypointData> tempPath = new List<EWaypointData>(path);
+            List<WaypointData> tempPath = new List<WaypointData>(path);
             AllPaths.Add(tempPath);
 
             startTargetWaypoints.ReadyToPickTargetWaypoint = true;
 
-            foreach (EWaypointData waypoint in path)
+            foreach (WaypointData waypoint in path)
             {
                 waypoint.GetComponent<MeshRenderer>().material.color = Color.blue;
             }
@@ -148,5 +146,5 @@ public class EPathfinder : MonoBehaviour
     }
 
     public bool Found { set { found = value; } }
-    public List<List<EWaypointData>> AllPaths { get { return allPaths; } set { allPaths = value; } }
+    public List<List<WaypointData>> AllPaths { get { return allPaths; } set { allPaths = value; } }
 }
