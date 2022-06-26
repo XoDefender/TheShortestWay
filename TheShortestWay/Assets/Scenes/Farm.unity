@@ -5563,7 +5563,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12698,18 +12698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccbcff520708dde40b5c71b223986ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1721824328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1721824324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 668f1f26e4e848c45a778e4245618890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1721824329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13296,7 +13284,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4280580941
-  m_fontColor: {r: 0.30339482, g: 0.4811321, b: 0.14252402, a: 1}
+  m_fontColor: {r: 1, g: 0.02964538, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14830,18 +14818,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c83b144a86e74aa44a0e2675fec16706, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2106119116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106119114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c64baac710908d468fcd5a248d6e666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2106119117

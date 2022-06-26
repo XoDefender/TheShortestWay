@@ -25,7 +25,7 @@ public class EPathAnalyzer : MonoBehaviour
                     enemyMovement.PathToFollow = pathToFollow;
                     exploredTargetWaypoints.Add(pathToFollow[pathToFollow.Count - 1]);
 
-                    ColorPath(pathToFollow, Color.red);
+                    //ColorPath(pathToFollow, Color.red);
 
                     break;
                 }

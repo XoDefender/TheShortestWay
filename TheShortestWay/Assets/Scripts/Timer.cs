@@ -8,8 +8,10 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private float timeStart = 60;
+    private float timeStart = 5;
+
     private const string playerName = "Player";
+    private const string enemyName = "Enemy";
 
     void Start()
     {
@@ -25,6 +27,9 @@ public class Timer : MonoBehaviour
             timerText.text = "Time: " + Mathf.Round(timeStart).ToString();
         }
         else
+        {
             Destroy(GameObject.Find(playerName));
+            Destroy(GameObject.Find(enemyName));
+        }
     }
 }

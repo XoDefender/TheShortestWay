@@ -15,7 +15,6 @@ public class ECoinCollector : MonoBehaviour
     private int pathCoins = 0;
     private int maxCoins = 0;
     private int pickedCoins = 0;
-    private int requiredCoins = 200;
 
     private void Awake()
     {
@@ -32,7 +31,7 @@ public class ECoinCollector : MonoBehaviour
     {
         Debug.Log(pickedCoins);
 
-        if (pickedCoins <= requiredCoins)
+        if (pickedCoins <= chestController.RequiredAmountOfPoints)
             SelectTheGreatestPath();
         else if(pathfinder.AllPaths.Count == waypoints.Length)
         {
@@ -91,7 +90,7 @@ public class ECoinCollector : MonoBehaviour
                         enemyMovement.PathToFollow = path;
                         maxCoins = 0;
 
-                        pathAnalyzer.ColorPath(path, Color.green);
+                        //pathAnalyzer.ColorPath(path, Color.green);
 
                         break;
                     }
@@ -128,6 +127,5 @@ public class ECoinCollector : MonoBehaviour
         }
     }
 
-    public int RequiredCoins { get { return requiredCoins; } }
-    public int PickedCoins { get { return pickedCoins; } }
+    public int PickedCoins { get { return pickedCoins; } set { pickedCoins = value; } }
 }

@@ -6,30 +6,23 @@ public class TrapsController : MonoBehaviour
 {
     [SerializeField] GameObject trapPrefab;
 
-    private PlayerHealth playerHealth;
-    private List<WaypointData> triggeredTraps = new List<WaypointData>();
     private HashSet<WaypointData> traps = new HashSet<WaypointData>();
     private WaypointData[] waypoints;
     private GameObject player;
     private StartEndWaypoints startEndWaypoints;
     private ChestController chestController;
     private GameObject enemy;
-    private EnemyHealth enemyHealth;
 
     private const string playerName = "Player";
     private const string enemyName = "Enemy";
     private const string trapName = "Pf_Trap_Needle(Clone)";
 
-    private int HitPoints = 50;
-
     private void Awake()
     {
         player = GameObject.Find(playerName);
-        playerHealth = player.GetComponent<PlayerHealth>();
         startEndWaypoints = GetComponent<StartEndWaypoints>();
         chestController = FindObjectOfType<ChestController>();
-        enemy = GameObject.Find(enemyName);
-        enemyHealth = enemy.GetComponent<EnemyHealth>();    
+        enemy = GameObject.Find(enemyName);  
     }
 
     // Start is called before the first frame update
@@ -44,27 +37,22 @@ public class TrapsController : MonoBehaviour
     {
         if (player)
             OnTrapTrigger();
-
-        if (enemy)
-            OnTrapTrigger();
     }
 
     private void OnTrapTrigger()
     {
         foreach (WaypointData trap in traps)
         {
-            if ((Mathf.Approximately(trap.transform.position.x, player.transform.position.x) && Mathf.Approximately(trap.transform.position.z, player.transform.position.z))
-                ||
-                (Mathf.Approximately(trap.transform.position.x, enemy.transform.position.x) && Mathf.Approximately(trap.transform.position.z, enemy.transform.position.z)))
+            if (Mathf.Approximately(trap.transform.position.x, player.transform.position.x) && Mathf.Approximately(trap.transform.position.z, player.transform.position.z))
             {
-                if(!triggeredTraps.Contains(trap))
-                {
-                    triggeredTraps.Add(trap);
-                    trap.transform.Find(trapName).GetComponent<Animation>().Play();
-
-                    playerHealth.HealthPoints -= HitPoints;
-                    enemyHealth.HealthPoints -= HitPoints;
-                }
+                trap.transform.Find(trapName).GetComponent<Animation>().Play();
+                Destroy(player);
+            }
+            
+            if(Mathf.Approximately(trap.transform.position.x, enemy.transform.position.x) && Mathf.Approximately(trap.transform.position.z, enemy.transform.position.z))
+            {
+                trap.transform.Find(trapName).GetComponent<Animation>().Play();
+                Destroy(enemy);
             }
         }
     }
@@ -75,12 +63,14 @@ public class TrapsController : MonoBehaviour
         {
             var newTrap = Instantiate(trapPrefab, new Vector3(trap.transform.position.x, trap.transform.position.y + 5, trap.transform.position.z), Quaternion.identity);
             newTrap.transform.parent = trap.transform;
+
+            trap.TextMesh.text = "";
         }
     }
 
     private void CreateTraps()
     {
-        int trapsAmount = 20;
+        int trapsAmount = 10;
 
         waypoints = FindObjectsOfType<WaypointData>();
 

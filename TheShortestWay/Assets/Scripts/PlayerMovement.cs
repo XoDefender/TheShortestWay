@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
             if(targetVector != Vector3.zero)
                 transform.forward = targetVector;
 
-            int movingSpeed = 170;
+            int movingSpeed = 100; // 170
 
             for(int i = 1; i <= movingSpeed; i++)
             {

@@ -70,7 +70,7 @@ public class WaypointData : MonoBehaviour
 
     private int SetCoins()
     {
-        return Random.Range(1, 20);
+        return Random.Range(1, 50);
     }
 
     private void DeleteText()

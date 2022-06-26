@@ -10,20 +10,25 @@ public class EStartTargetWaypoints : MonoBehaviour
     private WaypointData startWaypoint;
     private WaypointData targetWaypoint;
     private GameObject enemy;
+    private GameObject player;
     private EPathfinder pathfinder;
     private ECoinCollector coinCollector;
+    private ChestController chestController;
 
     private const string enemyName = "Enemy";
+    private const string playerName = "Player";
 
     private bool readyToPickTargetWaypoint = true;
     private int targetWaypointNumber = 0;
 
     private void Awake()
     {
+        enemy = GameObject.Find(enemyName);
+        player = GameObject.Find(playerName);
         pathfinder = FindObjectOfType<EPathfinder>();
         waypoints = FindObjectsOfType<WaypointData>();
-        enemy = GameObject.Find(enemyName);
         coinCollector = FindObjectOfType<ECoinCollector>();
+        chestController = FindObjectOfType<ChestController>();
     }
 
     // Update is called once per frame
@@ -33,10 +38,10 @@ public class EStartTargetWaypoints : MonoBehaviour
         PickTargetWaypoint();
         SetEndWaypointData();
 
-        if (Mathf.Approximately(endWaypoint.transform.position.x, enemy.transform.position.x) 
+        if (Mathf.Approximately(endWaypoint.transform.position.x, enemy.transform.position.x)
             && Mathf.Approximately(endWaypoint.transform.position.z, enemy.transform.position.z)
-            && coinCollector.PickedCoins >= coinCollector.RequiredCoins)
-            Destroy(pathfinder);
+            && coinCollector.PickedCoins >= chestController.RequiredAmountOfPoints && chestController.HasOpened)
+            Destroy(player);
     }
 
     private void PickStartWaypoint(WaypointData[] waypoints)
